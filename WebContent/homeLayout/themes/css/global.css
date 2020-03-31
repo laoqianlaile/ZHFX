@@ -1,0 +1,97 @@
+@charset "utf-8";
+/* CSS Document by_hanwy-2017.05.22 */
+*{
+	font-family:arial,Verdana,'Microsoft YaHei',simsun,Geneva,sans-serif;
+	margin:0px;
+	padding:0px;
+	box-sizing:border-box;
+	-moz-box-sizing:border-box; /*Firefox*/
+	-webkit-box-sizing:border-box; /*Safari*/
+}
+html{
+	font-size:12px;
+}
+body{
+	font-size:1em;
+	line-height:2;
+	color:#fff;
+}
+h1,h2,h3,h4,h5,h6{
+	font-size:1em;
+}
+ul,ol{
+	list-style:none;
+}
+table{
+	border-collapse:collapse;
+}
+button,input,select,img{
+	vertical-align:middle;
+	outline:none;
+}
+select,input[type='text']{
+	height:26px;
+	border:1px solid #ddd;
+	line-height:24px;
+	text-indent:4px;
+	color:#585858;
+	border-radius:1px;
+}
+textarea{
+	width:100%;
+	min-height:72px;
+	border:1px solid #ddd;
+	line-height:24px;
+	border-radius:1px;
+	overflow:auto;
+}
+a,button,input[type=button]{
+	cursor:pointer;
+}
+a,a:link,a:visited{
+	color:#333;
+	text-decoration:none;
+}
+a:hover{
+	color:#f66;
+	text-decoration:none;
+}
+.r{
+	float:right;
+}
+.l{
+	float:left;
+}
+.clear{
+	clear:both;
+}
+.clearfix{
+	zoom:1;
+}
+.clearfix:after{
+	display:block;
+	display:table;
+	content:'';
+	clear:both;
+	height:0;
+	line-height:0;
+	overflow:hidden;
+	visibility:hidden;
+}
+
+/*滚动条样式*/
+::-webkit-scrollbar{
+    width:10px;
+    height:10px;
+    background-color:transparent;
+}
+::-webkit-scrollbar-track{
+    background-color:transparent;
+}
+::-webkit-scrollbar-corner{
+	background-color:transparent;
+}
+::-webkit-scrollbar-thumb{
+    border-radius:5px;
+    background-color:#ccc;
+}

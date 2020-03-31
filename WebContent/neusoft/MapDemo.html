@@ -1,0 +1,716 @@
+﻿<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus®">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>地图展示DEMO</title>
+  
+ </head>
+ 
+ 
+ 
+ <!--<body onload="settab(0)" style="background-color:#132635; overflow-y:hidden" >-->
+ <body onload="settab(0)" style="background-image:url('img/bg.jpg');" overflow-y:hidden" >
+    <!--<div style="width:100%;height:100%;"> -->
+		<!--<div id="tabBar" style="width:100%; height:0px; float:left;"  onclick="javascript:settab(0);">--><!--height:40px;-->
+			<!--<input type="button" name="btn1" value="数据汇集" onclick="javascript:showdemo1();">--><!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+		<!--</div>-->
+		<!--<div style="width:50%;height:40px;float:left;"  onclick="javascript:settab(1);">
+			<!--<input type="button" name="btn2" value="数据变化" onclick="javascript:showdemo2();">--><!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+			
+		<!--</div>-->
+	    <div style="text-align:center;">
+		   <div>
+		      <!-- <div style="color:#FFF;font-size:44px;font-weight:bold;letter-spacing:0.2px"> -->
+				   <div style="text-align:right;">
+					   <img src="close.png" onclick="closeWin()"/> 
+				   </div>
+				   <!--
+			       <div style="text-align:center; "><font face="华文中宋" >全国投资项目在线审批监管平台数据汇聚</font>
+				   </div>
+				   -->
+				   <div style="text-align:center; " >
+				       <img src="img/logo.png" alt=""/>
+				   </div>
+				</div>
+			<!--</div>-->
+		<div id="main" style="width:80%;height:642px;margin:0 auto;"></div> <!--height:660px;-->
+	<!--</div>-->
+	<script src="js/echarts/build/dist/echarts-all.js"></script>
+	<!--<script src="js/timelineOption.js"></script>	-->
+	<!--<script src="js/xls/xls.js"></script> -->
+	<script type="text/javascript">
+	//var hei = window.screen.availHeight;
+	//var hei = document.body.clientHeight; 
+    //var hei = document.documentElement.clientWidth ;
+	//document.getElementById('tabBar').style.height='40px';
+    //document.getElementById('main').style.height=660+'px';
+	//document.getElementById('tabBar').style.height=hei*0.3;
+    function dataXPoint(id,sequence){ 
+    	var dataarr=new Array(); 
+		/*
+        $.ajax({ 
+        url:"../do/tab/SearchData", 
+        async:false,
+        dataType:"text", 
+        success:function(data) 
+       { 
+         var ss=eval(data); 
+         for(var i=0;i<ss.length;i++) 
+        {  
+             nameArr.push(ss[i][0].name)
+             dataarr.push(ss[i]); 
+        }
+       }
+      }); 
+	  dataarr=[
+                    {name:'上海',value:95},
+                    {name:'广州',value:90},
+                    {name:'辽宁',value:80},
+                    {name:'南宁',value:70},
+                    {name:'南昌',value:60},
+                    {name:'拉萨',value:50},
+                    {name:'长春',value:40},
+                    {name:'武汉',value:30},
+                    {name:'重庆',value:20},
+                    {name:'成都',value:10}
+                ];*/
+		dataarr[0]=[                    
+					{name:'北京',value:23},
+					{name:'兵团',value:26},
+					{name:'济南',value:241},
+					{name:'福州',value:9},
+					{name:'合肥',value:102},
+					{name:'银川',value:44},
+					{name:'太原',value:507},
+					{name:'长春',value:76},
+					{name:'海口',value:90},					
+					{name:'昆明',value:219},
+					{name:'南昌',value:147},
+					{name:'长沙',value:92},			
+					];
+		dataarr[1]=[
+                    {name:'沈阳',value:72},
+					{name:'郑州',value:143},
+					{name:'兰州',value:58},
+					{name:'贵阳',value:72},
+					{name:'保定',value:222},
+					{name:'武汉',value:75},
+					{name:'南宁',value:''},
+					{name:'呼和浩特',value:60},
+					{name:'宁波市',value:90},
+					{name:'乌鲁木齐',value:67},
+					{name:'青岛市',value:67},					
+					{name:'西安',value:204},
+					{name:'西宁',value:''},
+					{name:'成都',value:343}
+					
+					];
+		dataarr[2]=[
+                    {name:'上海',value:23},
+					{name:'广州',value:94},
+					{name:'哈尔滨',value:45},
+					{name:'拉萨',value:10},
+					{name:'南京',value:258},
+					{name:'天津',value:48},
+					{name:'大连市',value:23},
+					{name:'厦门市',value:7},
+					{name:'杭州',value:383},
+					{name:'中央',value:30},
+					{name:'重庆',value:343}
+					];
+					
+	  return getReturnDataarr(dataarr[id]);
+
+} ;
+
+function getReturnDataarr(arr){
+	var returnDataarr = new Array(); 
+	
+	for(var item in arr){
+		var value = 0;
+		if(currentSequence != null){
+			value = parseInt(arr[item].value)/parseInt((totalSequence - currentSequence));
+		}
+		
+		returnDataarr.push({name:arr[item].name,value:parseInt(value)});
+	}
+	
+	return returnDataarr;
+	
+}
+
+function dataXLine(id,currentSequence){ 	     
+		var dataarr = new Array();
+		var pointarr=dataXPoint(id,currentSequence);
+		for( var item in pointarr)
+		{
+			var arr=new Array();
+			arr.push(pointarr[item],{name:'中央'});
+			dataarr.push(arr);
+		}	  
+      return dataarr; 
+} ;
+var seed=0;
+var currentSequence = 0;//当前轮询序号
+var totalSequence = 1;//每组轮询总次数
+var tab_seed=0;
+var timer;
+var tab_timer;
+var data_arrs = [];
+var data_arrs_s = [];
+var data_arrs_seq = [];//轮循数据
+function settab(id){
+	//clearInterval(tab_timer);	
+	//if(id==0)
+	    //data_arrs_seq = ReadExcelBySeq();//
+	    //var data_arrs_s = ReadExcelByDate();
+		//data_arrs = data_arrs_s[0];
+		//data_title_col = data_arrs_s[1];
+		showdemo1();
+	//else
+		//showdemo2();
+	//showtab();
+}
+function showtab(){
+	
+	tab_timer = setInterval(function () {
+			if(tab_seed==0)
+			{
+				tab_seed=1;
+				showdemo2();
+			}
+			else
+			{
+				tab_seed=0;
+				showdemo1();
+			}
+			
+	},45000)
+}
+
+function showdemo1(){
+	showdemo();
+	timer = setInterval(function () {
+		currentSequence++;
+		if(currentSequence>=totalSequence){
+			seed++;			
+			if(seed>=3){
+				seed = 0;
+			}
+			else{
+				seed = seed % 3;
+			}
+			currentSequence = 0;	
+		}else{
+			currentSequence = currentSequence % totalSequence;
+		}		
+		showdemo();	
+	},6000)//3000
+}
+function showdemo(){  	 
+	// 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+        var option = null;
+	option = {
+    //backgroundcolor: '#001133',
+    color: ['gold','aqua','lime'],
+//    title : {
+//        text: '                                      全国投资项目在线审批监管平台数据汇集情况',//'数据实时汇集情况',
+//        x:'left',
+		//y:'-10px',
+//        textStyle : {
+//            color: '#fff',
+//			fontSize:24
+//        }
+//    },
+    tooltip : {
+        trigger: 'item',
+        formatter: '{b}'
+    },    
+    toolbox: {
+        show : false,
+        orient : 'vertical',
+        x: 'right',
+        y: 'center',
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    dataRange: {
+        min : 0,
+        max : 600,
+		x:'80px',
+		y:'530px',
+		itemHeight:10,
+        calculable : true,
+        //color: ['#ff3333', 'orange', 'yellow','lime','aqua'],
+		color: ['#ff3333', 'orange', 'yellow'],
+        textStyle:{
+            color:'#fff'
+        }
+    },
+    series : [
+        {
+            name: '全国',
+            type: 'map',
+            roam: true,
+            hoverable: false,
+            mapType: 'china',
+            itemStyle:{
+                normal:{
+                  	label: {show: true,
+					        textStyle:{
+					           color: '#C0C0C0',//'#2',//'#AE6832',//'#8B4513'
+							   fontWeight:'bold'
+					        }
+					},
+                    //borderColor:'#475a77',//'rgba(100,149,237,1)',
+					borderColor:'#475a85',//'rgba(100,149,237,1)',
+                    borderWidth:1.5,
+                    areaStyle:{
+                        //color: '#132635'
+						color: '#224259'
+                    },
+					
+                }
+            },
+            data:[], 
+			markLine : {
+			    zlevel:1,
+                smooth:true,
+                symbol: ['circle', 'none'],  
+                symbolSize : 2,
+                itemStyle : {
+                    normal: {
+                        color:'rgb(0,255,0)',
+                        borderWidth:1,
+                        borderColor:'rgba(0,255,0,0.5)',
+						lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : [
+                    [{name:'北京'},{name:'中央'}],
+					[{name:'上海'},{name:'中央'}],
+					[{name:'天津'},{name:'中央'}],
+					[{name:'重庆'},{name:'中央'}],
+					[{name:'太原'},{name:'中央'}],
+					[{name:'沈阳'},{name:'中央'}],
+					[{name:'长春'},{name:'中央'}],
+					[{name:'哈尔滨'},{name:'中央'}],
+					[{name:'南京'},{name:'中央'}],
+					[{name:'杭州'},{name:'中央'}],
+					[{name:'合肥'},{name:'中央'}],
+					[{name:'南昌'},{name:'中央'}],
+					[{name:'济南'},{name:'中央'}],
+					[{name:'保定'},{name:'中央'}],
+					[{name:'郑州'},{name:'中央'}],
+					[{name:'武汉'},{name:'中央'}],
+					[{name:'广州'},{name:'中央'}],
+					[{name:'南宁'},{name:'中央'}],
+					[{name:'海口'},{name:'中央'}],
+					[{name:'成都'},{name:'中央'}],
+					[{name:'贵阳'},{name:'中央'}],
+					//[{name:'拉萨'},{name:'中央'}],
+					[{name:'拉萨'},{name:'中央'}],
+					[{name:'西安'},{name:'中央'}],
+					[{name:'兰州'},{name:'中央'}],
+					[{name:'西宁'},{name:'中央'}],
+					[{name:'银川'},{name:'中央'}],
+					[{name:'乌鲁木齐'},{name:'中央'}],
+					[{name:'兵团'},{name:'中央'}],
+					[{name:'呼和浩特'},{name:'中央'}],
+					[{name:'昆明'},{name:'中央'}],
+					[{name:'福州'},{name:'中央'}],
+					[{name:'长沙'},{name:'中央'}],
+					[{name:'大连市'},{name:'中央'}],
+					[{name:'厦门市'},{name:'中央'}],
+					[{name:'宁波市'},{name:'中央'}],
+					[{name:'深圳市'},{name:'中央'}],
+					[{name:'青岛市'},{name:'中央'}]
+
+                ],
+            },
+            geoCoord: {
+				'中央': [116.4351,40.2839],
+                '北京': [116.4551,40.2539],
+				'上海': [121.4648,31.2891],
+				'天津': [117.4219,39.4189],
+				'重庆': [107.7539,30.1904],
+				'太原': [112.3352,37.9413],
+				'沈阳': [123.1238,42.1216],
+				'长春': [125.8154,44.2584],
+				'哈尔滨': [127.9688,45.368],
+				'南京': [118.8062,31.9208],
+				'杭州': [119.5313,29.8773],
+				'合肥': [117.29,32.0581],
+				'南昌': [116.0046,28.6633],
+				'济南': [117.1582,36.8701],
+				'保定': [115.0488,39.0948],
+				'郑州': [113.4668,34.6234],
+				'武汉': [114.3896,30.6628],
+				'广州': [113.5107,23.2196],
+				'南宁': [108.479,23.1152],
+				'海口': [110.3893,19.8516],
+				'成都': [103.9526,30.7617],
+				'贵阳': [106.6992,26.7682],
+				'拉萨': [91.1865,30.1465],
+				'西安': [109.1162,34.2004],
+				'兰州': [103.5901,36.3043],
+				'西宁': [101.4038,36.8207],
+				'银川': [106.3586,38.1775],
+				'乌鲁木齐': [87.9236,43.5883],
+				'兵团': [84.9236,40.5883],
+				'呼和浩特': [111.4124,40.4901],
+				'昆明': [102.9199,25.4663],
+				'福州': [119.4543,25.9222],
+				'长沙': [113.0823,28.2568],
+				'大连市': [122.2229,39.4409],
+				'厦门市': [118.1689,24.6478],
+				'宁波市': [121.5967,29.6466],
+				'深圳市': [114.5435,22.5439],
+				'青岛市': [120.4651,36.3373]
+            }
+        },
+        {
+            name: '北京 Top10',
+            type: 'map',
+            mapType: 'china',
+            data:[],
+            markLine : {
+			    zlevel:0,
+                smooth:true,
+				symbol: ['none', 'none'], 
+                effect : {
+                    show: true,
+                    scaleSize: 1,
+                    period: 6,
+                    color: '#fff',
+                    shadowBlur: 10
+                },
+                itemStyle : {
+                    normal: {
+                      	label:{show: false},
+                        lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        },
+						color:'rgb(0,255,0)',
+                        borderWidth:1.2,
+                        borderColor:'rgba(0,255,0,1)'
+                    }
+                },
+				data :dataXLine(seed,currentSequence)
+            },
+			/**markPoint : {
+                symbol:'star',
+                symbolSize : 6,
+                effect : {
+                    show: false,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        color:'rgb(255,0,0)'
+                    }
+                },
+                data : [
+                    {name:'中央'}
+					
+					]
+            },**/
+            markPoint : {
+                symbol:'emptyCircle',
+                symbolSize : function (v){
+                    var ss = 5 + v/10;
+					if (v>=100 && v<=1000)
+						ss = 10 + v/100;
+					else if(v>1000)
+						ss = 15 + v/100;
+					return ss;
+                },
+                effect : {
+                    show: false,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        label:{
+							show:true,
+							textStyle:{fontSize:12}
+						}
+                    },
+                    emphasis: {
+                        label:{position:'top'}
+                    }
+                },
+                data : dataXPoint(seed)
+            }
+			
+        },
+		{
+            name: '北京 Top10',
+            type: 'map',
+            mapType: 'china',
+            data:[],
+            
+			markPoint : {
+                //symbol:'none',//star
+				zlevel:3,
+				symbol:'image://logo.png',
+                symbolSize : 14,
+                effect : {
+                    show: false,
+                    shadowBlur : 0
+                },
+                itemStyle:{
+                    normal:{
+                        //color:'rgb(255,0,0)'
+                    }
+                },
+                data : [
+                    {name:'中央'}
+					
+					]
+            },
+			markLine : {
+                smooth:true,
+				zlevel:0,
+                symbol: ['none', 'none'],
+                //symbol:'image://../Demo/logo.png',
+				//symbol:'image://logo11.png',
+                symbolSize : 14,
+                itemStyle : {
+                    normal: {
+                        color:'red',
+                        borderWidth:1,
+                        borderColor:'rgba(0,255,0,0.5)',
+						lineStyle: {
+                            type: 'solid',
+                            shadowBlur: 10
+                        }
+                    }
+                },
+                data : [
+                    [{name:'北京'},{name:'中央'}]
+
+                ],
+            }, 
+
+            geoCoord: {
+				'中央': [116.4351,40.2839],
+                '北京': [116.4551,40.2539]
+            }			
+        }
+    ]
+};
+
+        // 为echarts对象加载数据 
+        myChart.setOption(option); 
+}
+
+function showdemo2(){ 	 
+	clearInterval(timer);
+	// 基于准备好的dom，初始化echarts图表
+        var myChart = echarts.init(document.getElementById('main')); 
+        
+        var option = null;
+option = {
+    timeline:{
+        data:[
+            '2016-08-01','2016-09-01','2016-10-01','2016-11-01','2016-12-01',
+			'2017-01-01','2017-02-01','2017-03-01','2017-04-01','2017-05-01'
+        ],
+        label : {
+            formatter : function(s) {
+                return s.slice(0, 7);
+            },
+			textStyle:{
+					color:'#fff'
+				}
+        },
+		controlStyle : {
+			itemSize: 15,
+			itemGap: 5,
+			normal : {
+				color : '#fff'
+			},
+			emphasis : {
+				color : '#1e90ff'
+			}
+		},      
+        autoPlay : true,
+        playInterval : 1000
+    },
+    options:[
+        {
+            title : {
+                text:'2016年8月地方数据上报情况',
+				x:'center',
+				textStyle : {
+				color: '#fff',
+				fontSize:24
+        }
+            },
+			//backgroundcolor: '#001133',
+            tooltip : {
+				trigger:'item',
+				formatter: '{b}<br/>{c}个',
+				textStyle:{
+					fontSize:24,
+				}
+			},
+            toolbox : {
+                show:false, 
+                feature:{
+                    mark:{show:true},
+                    dataView:{show:true,readOnly:false},
+                    restore:{show:true},
+                    saveAsImage:{show:true}
+                }
+            },
+            dataRange: {
+                min: 0,
+                max : 61000,
+                text:['高','低'],           // 文本，默认为数值文本
+                calculable : true,
+                x: 'left',
+                color: ['orangered','yellow','lightskyblue'],
+				textStyle:{
+					color:'#fff'
+				}
+            },
+            series : [
+                {
+                    name:'项目上报数',
+                    type:'map',
+					mapType: 'china',
+					itemStyle:{
+						normal:{
+                  			label: {show: true},
+							borderColor:'rgba(100,149,237,1)',
+							borderWidth:0.5,
+							areaStyle:{
+								color: '#132635'
+							}
+						}
+				},
+                    data: data_arrs[0]
+                }
+            ]
+        }
+    ]
+	
+};       option.options[0].title=data_title_col[0].text;
+	     option.options[0].series[0].data=data_arrs[0];                         
+         for(var j=1,i=1;j<data_arrs.length;j++,i++){
+		     option.options[j].title=data_title_col[i].text;
+			 option.options[j].series[0].data=data_arrs[j];
+		 }
+        // 为echarts对象加载数据 
+        myChart.setOption(option); 
+}
+
+function ReadExcelByDate() { 
+    //alert(window.location.pathname);
+	var path = window.location.pathname.substring(1,window.location.pathname.lastIndexOf('/')+1) ;
+	var filePath = path+"dataSource/datamodel.xlsx";
+    var tempStr = "";  
+    //创建操作EXCEL应用程序的实例  
+    var oXL = new ActiveXObject("Excel.application");  
+    //打开指定路径的excel文件  
+    var oWB = oXL.Workbooks.open(filePath);	
+	var a = oXL.Workbooks.path;
+    //操作第一个sheet(从一开始，而非零)  
+    oWB.worksheets(1).select();  
+    var oSheet = oWB.ActiveSheet;  
+    //使用的行数  
+    var rows =  oSheet .usedrange.rows.count;
+	var colums =  oSheet .usedrange.Columns.count;
+    var titleInd= 2;//地区名称所在行
+	var dataArrs = [];//存储所有行数据
+	var colTitleArr = [];//存储首列标题
+	var totalDataArr = [];
+    try { 	
+        for (var i = 3; i <= rows; i++) {
+		    var dataArr = [];//存储每行数据
+            for(var ind = 2; ind<=colums; ind++){//列索引
+			    var objs = {};
+			    objs.name = oSheet.Cells(titleInd, ind).value;
+			    objs.value = oSheet.Cells(i, ind).value;
+				dataArr.push(objs);
+			}
+            dataArrs.push(dataArr);
+			var colTitleObj = {};
+			colTitleObj.text = oSheet.Cells(i, 1).value;
+			colTitleArr.push(colTitleObj);
+		} 
+		totalDataArr[0]=dataArrs;
+		totalDataArr[1]=colTitleArr;
+    } catch(e) {  
+            //document.getElementById("txtArea").value = tempStr;  
+    }  
+    //document.getElementById("txtArea").value = tempStr;  
+    //退出操作excel的实例对象  
+    oXL.Application.Quit();  
+    //手动调用垃圾收集器  
+    CollectGarbage(); 
+    return 	totalDataArr;
+    }
+
+function ReadExcelBySeq() { 
+    //alert(window.location.pathname);
+	var path = window.location.pathname.substring(1,window.location.pathname.lastIndexOf('/')+1) ;
+	var filePath = path+"dataSource/datamodel2.xlsx";  
+    //创建操作EXCEL应用程序的实例  
+    var oXL = new ActiveXObject("Excel.application");  
+    //打开指定路径的excel文件  
+    var oWB = oXL.Workbooks.open(filePath);
+    //操作第一个sheet(从一开始，而非零)  
+    oWB.worksheets(1).select();  
+    var oSheet = oWB.ActiveSheet;  
+    //使用的行数  
+    var rows =  oSheet .usedrange.rows.count;
+	var colums =  oSheet .usedrange.Columns.count;
+    var titleInd= 2;//地区名称所在行
+	
+	var totalDataArrs = [];
+    try {
+         for(var i=2;i<rows;i+=2){//地名
+		     var dataArrs = [];//存储所有行数据
+		     for(var j=2;j<colums+1;j++){ 
+			    var objs = {};
+				if(oSheet.Cells(i, j).value==null||oSheet.Cells(i, j).value== undefined){
+				    break;
+				}
+				objs.name = oSheet.Cells(i, j).value;
+				objs.value = oSheet.Cells(i+1, j).value;
+				dataArrs.push(objs);
+			 }
+			totalDataArrs.push(dataArrs);
+		 }
+    } catch(e) {  
+    }  
+    //退出操作excel的实例对象  
+    oXL.Application.Quit();  
+    //手动调用垃圾收集器  
+    CollectGarbage();
+    return 	totalDataArrs;
+}
+function closeWin(){
+    window.opener=null;
+    window.open('','_self');
+    window.close();
+}     
+    </script>
+ </body>
+</html>

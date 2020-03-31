@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20131111" releaseVersion="7.0.5">
+<TableDataMap>
+<TableData name="ds1" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="division_0204"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="spcj_0204"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[GBase]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT
+        BB.S_NAME AS AREA_NAME,
+        AA.CODE_VALUE         ,
+        AA.CODE_NAME          ,
+        AA.DQ_NUM             ,
+        AA.LT_DQ_NUM          ,
+        AA.DEPT_NUM           ,
+        AA.LT_DEPT_NUM
+FROM
+        (
+                SELECT
+                         ${
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=1),"A.CODE2",
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=2),"A.CODE",
+"A.CODE1"))}      AS AREA_CODE       ,
+B.CODE_VALUE,
+B.CODE_NAME,
+                        SUM(DQ_NUM)      AS DQ_NUM   ,
+                        SUM(LT_DQ_NUM)   AS LT_DQ_NUM,
+                        SUM(DEPT_NUM)    AS DEPT_NUM ,
+                        SUM(LT_DEPT_NUM) AS LT_DEPT_NUM
+                FROM
+                        FA_SXLTQK A,
+                        DIM_SPCJ B
+                WHERE
+                        A.LEVEL_N=B.CODE_VALUE
+${if(len(spcj_0204)==0,""," and B.CODE_NAME='" + spcj_0204 + "'")}
+${
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=1)," AND A.S_NAME1='"+indexofarray(split(division_0204,">>"),1)+"'",
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=2)," AND A.S_NAME2='"+indexofarray(split(division_0204,">>"),2)+"'",
+""))}
+                GROUP BY
+ ${
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=1),"A.CODE2",
+if(and(len(division_0204)<>0,count(split(division_0204,">>"))=2),"A.CODE",
+"A.CODE1"))},B.CODE_VALUE,B.CODE_NAME
+        )
+        AA,
+        FA_SXLTQK BB
+WHERE
+        AA.AREA_CODE=BB.CODE
+ORDER BY
+        BB.CODE2_ORDER ASC]]></Query>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,1333500,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[2743200,4610100,2743200,2743200,2743200,0,0,0,2743200,2743200,2743200,0,0,0,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" rs="2" s="0">
+<O>
+<![CDATA[序号]]></O>
+<Expand/>
+</C>
+<C c="1" r="0" rs="2" s="0">
+<O t="BiasTextPainter">
+<IsBackSlash value="false"/>
+<![CDATA[审批层级|地区]]></O>
+<Expand/>
+</C>
+<C c="2" r="0" rs="2" s="0">
+<O>
+<![CDATA[已联通地区数]]></O>
+<Expand/>
+</C>
+<C c="3" r="0" rs="2" s="0">
+<O>
+<![CDATA[全部地区数]]></O>
+<Expand/>
+</C>
+<C c="4" r="0" rs="2" s="0">
+<O>
+<![CDATA[已联通地区数占比]]></O>
+<Expand/>
+</C>
+<C c="5" r="0" rs="2" s="0">
+<O>
+<![CDATA[已联通部门数]]></O>
+<Expand/>
+</C>
+<C c="6" r="0" rs="2" s="0">
+<O>
+<![CDATA[全部部门数]]></O>
+<Expand/>
+</C>
+<C c="7" r="0" rs="2" s="0">
+<O>
+<![CDATA[已联通部门数占比]]></O>
+<Expand/>
+</C>
+<C c="8" r="0" cs="6" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="CODE_NAME"/>
+<Complex order="1"/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<SortFormula>
+<![CDATA[CODE_VALUE]]></SortFormula>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+</O>
+<Expand dir="1"/>
+</C>
+<C c="8" r="1" s="0">
+<O>
+<![CDATA[已联通地区数]]></O>
+<Expand/>
+</C>
+<C c="9" r="1" s="0">
+<O>
+<![CDATA[全部地区数]]></O>
+<Expand/>
+</C>
+<C c="10" r="1" s="0">
+<O>
+<![CDATA[已联通地区数占比]]></O>
+<Expand/>
+</C>
+<C c="11" r="1" s="0">
+<O>
+<![CDATA[已联通部门数]]></O>
+<Expand/>
+</C>
+<C c="12" r="1" s="0">
+<O>
+<![CDATA[全部部门数]]></O>
+<Expand/>
+</C>
+<C c="13" r="1" s="0">
+<O>
+<![CDATA[已联通部门数占比]]></O>
+<Expand/>
+</C>
+<C c="0" r="2" s="1">
+<Expand/>
+</C>
+<C c="1" r="2" s="2">
+<O>
+<![CDATA[合计]]></O>
+<Expand/>
+</C>
+<C c="2" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(C4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="3" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(D4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="4" r="2" s="3">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=C3 / D3]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="5" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(F4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="6" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(G4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="7" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=F3 / G3]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="8" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(I4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="9" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(J4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="10" r="2" s="3">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=I3 / J3]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="11" r="2" s="4">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(L4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="12" r="2" s="4">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(M4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="13" r="2" s="4">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=L3 / M3]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="0" r="3" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=seq()]]></Attributes>
+</O>
+<Expand leftParentDefault="false" left="B4"/>
+</C>
+<C c="1" r="3" s="5">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="AREA_NAME"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="2" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="LT_DQ_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="3" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="DQ_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="4" r="3" s="7">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=C4 / D4]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="5" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="LT_DEPT_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="6" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="DEPT_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="7" r="3" s="6">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=F4 / G4]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="8" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="LT_DQ_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="9" r="3" s="6">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="DQ_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="10" r="3" s="7">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=I4 / J4]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="11" r="3" s="8">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="LT_DEPT_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="12" r="3" s="8">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="DEPT_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<Expand/>
+</C>
+<C c="13" r="3" s="8">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=L4 / M4]]></Attributes>
+</O>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting>
+<PaperSize width="85536000" height="121104000"/>
+<Margin top="986400" left="2743200" bottom="986400" right="2743200"/>
+</PaperSetting>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="false" delayPlaying="false" windowPosition="1" align="1"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat">
+<![CDATA[#0.00%]]></Format>
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="1" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat">
+<![CDATA[#0.00%]]></Format>
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="HAF"/>
+<PreviewType PreviewType="0"/>
+</WorkBook>

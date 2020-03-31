@@ -1,0 +1,31 @@
+<form action="/BI/LoginServlet" method="post">
+                用户名：<input type="text" name="username" value="<%=uname %>"><br>
+                密  码：<input type="password" name="password"><br>
+                验证码：<input type="text" name="verifyCode">
+                        <img id="img" src="/BI/DealDataServlet">
+                        <a href="javascript:_change()">看不清换一张</a><br>
+                <input type="submit" value="登录">
+         </form>
+
+    <!-- 看不清换一张使用javascript实现，代码如下： -->
+     <script type="text/javascript">
+			var curPath = window.document.location.href;
+			//获取主机地址之后的目录，如： test/test.jsp
+			var pathName = window.document.location.pathname;
+			var pos = curPath.indexOf(pathName);
+			//获取主机地址，如： http://localhost:8088
+			var localhostPaht = curPath.substring(0,pos);
+			//获取带"/"的项目名，如：/test
+			var projectName = pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+			var rootPath = localhostPaht+projectName;
+			//  window.location= rootPath+"/common/common!overview";
+            function _change(){
+               /**
+               *1.得到image图片
+               *2.修改其src为/test/VerifyCodeServlet 
+               */
+               var imgEle=document.getElementById("img");
+               imgEle.src="/BI/DealDataServlet?a="+new Date().getTime();
+                
+            }
+   </script>

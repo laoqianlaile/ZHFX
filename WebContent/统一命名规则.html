@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+   总览命名以 overview 开头
+   五年规划储备以 fiveplan 开头
+   三年滚动计划 以 rollplan 开头
+   中央预算内以 budget 开头
+   专项建设基金 以 funds 开头
+  项目档案 projectFile  开头
+  综合分析报告    monthReport 开头
+    Action 层的名称以   Action 结尾
+    Service 实现层名称以  ServiceImpl结尾； 例如：专项建设基金的实现层   FundsServiceImpl
+    Service 接口层名称 以  I+模块名称+Service   例如：专项建设基金的接口   IFundsService
+
+<pre>
+    <p>伍伟 2016年10月24日19:14:17</p>
+    <p>
+       	建设地点code（三级）:BuildPlaceCode
+       	发改委行业code（二级）:IndustryCode
+       	发改委行业级别:IndustryLevel
+       	国标行业code（四级）:GBIndustryCode
+       	国标行业级别:GBIndustryLevel
+       	政府投资方向code（四级）:GovernmentCode
+       	政府投资方向级别:GovernmentLevel
+       	重大战略code（一级）:MajorCode
+     	审核备类型code（一级）:ProjectTypeCode
+     	申报类型code（一级：地方发改委，中央部门，央企）：DepartmentLv1Code
+     	申报部门code（一级）:DepartmentLv2Code
+     	委内司局code（一级）:WNSJCode
+     	项目进展情况code（一级）：ProgressCode
+    </p>
+</pre>
+
+   <pre>
+    <p>谭农春 2016年10月27日12:35:31  字典GROUP_NO 分组号</p>
+    <p>Cache.getNameByCode(PropertiesUtil.getInfoByName("BuildPlaceCode"),'110000')  返回北京市</p>
+    <p>
+       	#建设地点
+        BuildPlaceCode=1
+        #行业
+        IndustryCode=8
+        #行业（国标行业）
+        GBIndustryCode=2
+        #政府投资方向
+        GovernmentCode=9
+        #重大战略
+        MajorCode=14
+        #项目审核备类型（项目类型）
+        ProjectTypeCode=3
+        #项目进展情况（形象进度）
+        ProgressCode=17
+        #专项类别
+        SpecType=19
+        #国标
+        CountryType=13
+        #批复状态
+        AppState=5
+        #招投标形式
+        BidWay=6
+        #建设性质
+        BuildProperty=7
+        #政府参与方式
+        GovJoinWay=10
+        #PPP操作模式
+        PppOperateWay=11
+        #项目阶段(项目成熟度)
+        ProjectMaturity=12
+        #回报方式
+        ReturnWay=18
+        #建议银行
+        SuggestBank=20
+        #符合规划
+        FitPlan=27
+        #类型(一带一路)类型
+        OneOneType=26
+        #项目成熟度
+        projectStatge=50
+
+    </p>
+</pre>
+   <pre>
+    <p>谭农春 2016年10月30日18:35:06  模块名称</p>
+       *      模块名称
+       *        fiveplan-五年储备项目
+       *         rollplan-三年滚动计划
+       *         funds-专项建设基金
+       *         budgetreport --中央预算内申报
+       *         budgetissue  中央预算内下达
+       *         budgetdiapatch  中央预算内调度
+   </p>
+   </pre>
+<pre>
+     filters.moduleCode=fiveplan
+
+ *      模块名称
+       *         fiveplan-五年储备项目
+       *         rollplan-三年滚动计划
+       *         funds-专项建设基金
+       *         budgetreport --中央预算内申报
+       *         budgetissue  中央预算内下达
+       *         budgetdiapatch  中央预算内调度
+地图的路径
+filters.BuildPlaceCode
+--- 过滤状态   filters.filterStatus
+  五年滚动计划
+     fiveplan -五年规划储备项目
+	 unfinish -未编制三年滚动计划项目
+ 三年滚动计划：
+     rollplan-各级编制三年滚动计划
+	 report-上报国家三年滚动计划
+
+  中央预算内-年度计划调度
+     start -开工项目
+	 end -开工项目
+地图下钻最后一级事件：
+ //北京东城区五年规划储备项目
+ http://59.255.137.11/BI/?filters.moduleCode=fiveplan&innerPage=1&filters.BuildPlaceCode=中国 >> 北京市 >> 东城区
+
+
+五年规划储备项目和未编制三年滚动计划项目单选切换图表的事件。
+过滤条件：未编制三年滚动计划项目
+//未编制三年滚动计划项目value---->key
+ ZHFX.collectParams('fiveplan','filterStatus');
+
+
+
+'filters.filterStatus'
+</pre>
+</body>
+</html>

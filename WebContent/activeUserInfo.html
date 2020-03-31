@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>综合分析</title>
+<link rel="stylesheet" type="text/css" href="themes/css/global.css" />
+<link rel="stylesheet" type="text/css" href="themes/css/layout.css" />
+<link rel="stylesheet" type="text/css" href="themes/css/login.css" />
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/prefixfree.min.js"></script>
+<script type="text/javascript" src="js/base.js"></script>
+<script type="text/javascript" src="js/md5.js"></script>
+<script type="text/javascript" src="common/extend.js"></script>
+<!-- <script type="text/javascript" src="ReportServer?op=emb&resource=finereport.js"></script> -->
+    <script type="text/javascript">
+  var i=1;
+  $(function(){
+     //   showLeftTime();
+     //   setInterval('showLeftTime()', 1000);
+    //$(".cardDiv .card-tag").eq(0).addClass("click-on");
+   // setInterval('autoTag();', 3000);
+    
+    //$(".card-tag").click(function(){ debugger;
+//     $(document).click(function(){
+//     	$("#dlLayer").show();
+// 		var cardNum = $(this).index();
+// 	});
+
+    
+      //  登录
+      $(".btn-dl").click(function(){
+          var self = this;
+          //  单击按钮之后灰掉
+          $(this).find("button").attr("disabled","disabled");
+          //获取当前网址，如： http://localhost:8088/test/test.jsp
+          var curPath = window.document.location.href;
+          //获取主机地址之后的目录，如： test/test.jsp
+          var pathName = window.document.location.pathname;
+          var pos = curPath.indexOf(pathName);
+          //获取主机地址，如： http://localhost:8088
+          var localhostPaht = curPath.substring(0,pos);
+          //获取带"/"的项目名，如：/test
+          var projectName = pathName.substring(0,pathName.substr(1).indexOf('/')+1);
+          var rootPath = localhostPaht+projectName;
+          //  window.location= rootPath+"/common/common!overview";
+          var username = window.encodeURIComponent(document.getElementById("username").value); //获取输入的用户名  
+          var password = window.encodeURIComponent(document.getElementById("password").value);  //获取输入的参数
+          password = $.md5(password);
+          // 登入
+          $.ajax({
+              type: 'POST',
+              url: rootPath+"/LoginServlet" ,
+              data: {username:username,password:password,m:"login"} ,
+              success: function(data){
+                 // 登录成功
+                if(data==0){
+                    window.location= rootPath+"/common/common!overview";
+                }
+                else{
+                    alert("用户名称或密码错误");
+                    $(self).find("button").removeAttr("disabled");
+                }
+              } ,
+              dataType: "text"
+          });
+
+      });
+  })
+  function autoTag(){
+    $(".cardDiv .card-tag").removeClass("click-on");
+    $(".cardDiv .card-tag").eq(i).addClass("click-on");
+    if(i<4){
+      ++i;
+    } else {
+      i=0;
+    }
+  }
+
+
+</script>
+
+</head>
+
+<body >
+<div style="display:none" id="dlLayer">
+	<div class="dlDiv">
+		<p class="input-dl"><span></span><input type="text"  id="username"/></p>
+		<p class="input-pwd"><span></span><input type="password" id="password"/></p>
+		<p class="btn-dl"><button>登 录</button></p>
+	</div>
+</div>
+<div >
+	<iframe src="screenPro.html" allowtransparency='true'  class="iframeTest" style="height:550px;width:100%;" frameborder="0"></iframe>
+	<div style="width:100%;height:100%;position:absolute;top:0;left:0;"></div>
+	<p class="userNum">总用户数
+	<i id="userCounts"></i>
+  </p>
+  <p class="userNum" style="top:32%">
+      本周活跃用户数
+    <i id="activeCounts"></i>
+  </p>
+</div>
+              <div class="cardDiv" style="display: none"  style="z-index:999">
+                <div class="card-tag" >
+                    <h6>五年规划项目储备</h6>
+                    <p><span id="fivePlanProjects"></span>项目总数：</p>
+                    <p><span id="fiveTotalInvestment"></span>总投资：</p>
+                </div>
+                <div class="card-tag">
+                    <h6>三年滚动投资计划</h6>
+                    <p><span id="threePlanProjects"></span>项目总数：</p>
+                    <p><span id="threeTotalInvestment"></span>总投资：</p>
+                </div>
+                <div class="card-tag">
+                    <h6>项目审核备办理</h6>
+                    <p><span id="projectAudit"></span>项目总数：</p>
+                    <p><span id="projectTotalInvestment"></span>总投资：</p>
+                </div>
+                <div class="card-tag">
+                    <h6>中央预算内投资</h6>
+                    <p><span id="centralBudgetProjects"></span>项目总数：</p>
+                    <p><span id="centralTotalInvestment"></span>总投资：</p>
+                    <p><span id="centralPutInvestment"></span>下达资金：</p>
+                </div>
+                <div class="card-tag">
+                    <h6>专项建设基金项目</h6>
+                    <p><span id="specialProjects"></span>项目总数：</p>
+                    <p><span id="specialTotalInvestment"></span>总投资：</p>
+                    <p><span id="specialPutInvestment"></span>投放资金：</p>
+                </div>
+              </div>
+            </div>
+        </div>
+  <script type="text/javascript">
+  	var date = new Date('2016-08-23');
+  	  $(document).ready(function(){
+//   		setInterval('getScreenInfo()', 180000);
+   		getScreenInfo();
+  	  });
+  	  
+  	  
+  	  function getScreenInfo() {
+  		$.ajax({
+			type : "POST",
+			url : 'LoginServlet',
+			data : {date : date.format('yyyy-MM-dd'),m:"getScreenInfo"},
+			async : true,// 同步请求     
+			dataType : "text",
+			success : function(data) {
+				var map = eval('(' + data + ')');
+				if (data) {
+					//用户个数
+					if (map['allUserCounts']) {
+						$('#userCounts').html(map['allUserCounts']+'个');
+					}
+				} 
+			},
+			error: function(){
+				
+			}
+		}); 
+  		date.setDate(date.getDate()+1);
+  	  }
+  	  
+	  //获得当前时间,刻度为一千分一秒
+	  function showLeftTime(){
+	    var now=new Date();
+	    var year=now.getFullYear();
+	    var month=now.getMonth()+1;
+	    var day=now.getDate();
+	    var hours=now.getHours();
+	    var minutes=now.getMinutes();
+	    var seconds=now.getSeconds();
+	    var zq=now.getDay();
+	    var Week = ['日','一','二','三','四','五','六'];
+	    if(seconds<10){
+	      seconds = "0"+seconds;
+	    }
+	    if(minutes<10){
+	      minutes = "0"+minutes;
+	    }
+	    var systemTime = "<i>"+hours+":"+minutes+":"+seconds+"</i>"+year+"年"+month+"月"+day+"日 星期"+Week[zq]; 
+	    $(".system-Time").html(systemTime);
+	    //一秒刷新一次显示时间
+	    //var timeID=setTimeout(showLeftTime,1000);
+	  }
+  </script>
+</body>
+</html>

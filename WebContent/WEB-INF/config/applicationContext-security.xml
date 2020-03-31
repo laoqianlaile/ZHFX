@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+             xmlns:beans="http://www.springframework.org/schema/beans"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/security
+           http://www.springframework.org/schema/security/spring-security.xsd">
+    <beans:bean id="customWebInvocationPrivilegeEvaluator" class="org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator">
+        <beans:constructor-arg name="securityInterceptor" ref="filterSecurityInterceptor" ></beans:constructor-arg>
+    </beans:bean>
+    <http pattern="/js/**" security="none"/>
+    <http pattern="/images/**" security="none"/>
+    <http pattern="/themes/**" security="none"/>
+    <http pattern="/fonts/**" security="none"/>
+    <http pattern="/login.jsp" security="none"/>
+    <http pattern="/companyLogin.jsp" security="none"/>
+    <http pattern="/forget_password.jsp" security="none"/>
+    <http pattern="/error" security="none"/>
+    <http pattern="/403" security="none"/>
+    <http pattern="/404" security="none"/>
+    <http pattern="/register.jsp" security="none"/>
+    <http pattern="/register/companyRegister!register" security="none"/>
+
+
+    <http once-per-request="true" use-expressions="false" entry-point-ref="smartLoginUrlAuthenticationEntryPoint" access-decision-manager-ref="customAccessDecisionManager" disable-url-rewriting="true">
+        <!--采用intercept-url配置，可以使用SpringSecurity内置的ADM，但是，如果在http上配置了自定义了ADM，此配置将失效-->
+        <form-login login-page="/login.jsp" authentication-failure-handler-ref="failureHandler" authentication-success-handler-ref="successHandler"/>
+        <logout delete-cookies="JSESSIONID" invalidate-session="true"/>
+        <access-denied-handler ref="my403"/>
+        <custom-filter ref="filterSecurityInterceptor" before="FILTER_SECURITY_INTERCEPTOR" />
+        <session-management session-fixation-protection="none"> 
+        	<concurrency-control expired-url="/logout.jsp" />
+        </session-management>
+    </http>
+    
+    <beans:bean id="smartLoginUrlAuthenticationEntryPoint"
+                class="com.strongit.iss.service.auth.security.SmartLoginUrlAuthenticationEntryPoint">
+                <beans:property name="loginFormUrl" value="/login.jsp"/>
+    </beans:bean>
+    <!-- 登录成功业务处理 -->
+    <beans:bean id="successHandler" class="com.strongit.iss.service.auth.security.LoginAuthenticationSuccessHandler">
+        <beans:property name="url" value="/home/home!index"/>
+        <beans:property name="username" value="j_username" />  
+    </beans:bean>
+	<!-- 登录失败业务处理 -->
+    <beans:bean id="failureHandler" class="com.strongit.iss.service.auth.security.LoginAuthenticationFailureHandler">
+    	<beans:property name="url" value="/login.jsp?error=" />
+    	<beans:property name="companyUrl" value="/companyLogin.jsp?error=" />
+    	<beans:property name="username" value="j_username" />
+    </beans:bean>
+
+    <beans:bean id="filterSecurityInterceptor"
+          class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+        <beans:property name="observeOncePerRequest" value="false"/>
+        <beans:property name="authenticationManager"
+                  ref="authenticationManager" />
+        <beans:property name="accessDecisionManager"
+                  ref="customAccessDecisionManager" />
+        <beans:property name="securityMetadataSource"
+                  ref="customSecurityMetadataSource" />
+    </beans:bean>
+
+	<beans:bean id="customSecurityMetadataSource"
+		class="com.strongit.iss.service.auth.security.CustomFilterInvocationSecurityMetadataSource">
+		<beans:constructor-arg ref="roleResService"></beans:constructor-arg>
+	</beans:bean>
+
+	<!-- spring security提供的用户登录验证 ，alias的值对应上面的ref="authenticationManager" -->
+	<authentication-manager alias="authenticationManager">
+		<!--userDetailServiceImpl 获取登录的用户、用户权限 -->
+		<authentication-provider user-service-ref="customUserDetailsService">
+			<password-encoder hash="md5" />
+		</authentication-provider>
+	</authentication-manager>
+	<!-- 获取登录的用户、用户权限 -->
+	<beans:bean id="customUserDetailsService"
+		class="com.strongit.iss.service.auth.security.UserDetailServiceImpl">
+	</beans:bean>
+	<beans:bean id="roleResService" class="com.strongit.iss.service.auth.impl.RoleResService"></beans:bean>
+
+    <beans:bean id="customAccessDecisionManager"
+                class="com.strongit.iss.spring.security.SevenCustomAccessDecisionManager"></beans:bean>
+
+    <beans:bean id="my403"
+                class="com.strongit.iss.spring.security.SevenAccessDeniedHandler">
+        <beans:property name="errorPage" value="/common/error/403.jsp"></beans:property>
+        
+    </beans:bean>
+    
+     <!--start 验证码 -->     
+	     <!--start 验证码 -->     
+	<beans:bean id="jcaptchaService"
+		class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService"> 		
+		<beans:constructor-arg type="com.octo.captcha.service.captchastore.CaptchaStore" index="0"> 
+          <beans:ref bean="sessionCaptchaStore"/> 
+       </beans:constructor-arg> 
+		<beans:constructor-arg index="1">
+			<beans:ref bean="imageEngine" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:value>180</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="3">
+			<beans:value>180000</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="4">
+			<beans:value>75000</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="sessionCaptchaStore" class="com.strongit.iss.ui.SessionCaptchaStore"/> 	
+	<beans:bean id="imageEngine"
+		class="com.octo.captcha.engine.GenericCaptchaEngine">
+		<beans:constructor-arg index="0">
+			<beans:list>
+				<beans:ref bean="CaptchaFactory" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="CaptchaFactory"
+		class="com.octo.captcha.image.gimpy.GimpyFactory">
+		<beans:constructor-arg>
+			<beans:ref bean="wordgen" />
+		</beans:constructor-arg>
+		<beans:constructor-arg>
+			<beans:ref bean="wordtoimage" />
+		</beans:constructor-arg>
+	</beans:bean>
+	<!--使用字典单词作为验证码-->
+	<!--  <beans:bean id="wordgen" class= "com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator" > 
+		<beans:constructor-arg><beans:ref bean="filedict"/></beans:constructor-arg> 
+		</beans:bean> 
+	-->
+	<!--使用随机数作为验证码-->
+	<beans:bean id="wordgen"
+		class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">
+		<beans:constructor-arg>
+			<beans:value>123456789QWERTYUIOPASDFGHJKLZXCVBNM</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="wordtoimage"
+		class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+		<beans:constructor-arg index="0">
+			<beans:ref bean="fontGenRandom" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:ref bean="backGenUni" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:ref bean="simpleWhitePaster" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="filedict"
+		class="com.octo.captcha.component.word.FileDictionary">
+		<beans:constructor-arg index="0">
+			<beans:value>toddlist</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="fontGenRandom"
+		class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+		<!-- 验证码 字体最小值 -->
+		<beans:constructor-arg index="0">
+			<beans:value>20</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 字体最大值 -->
+		<beans:constructor-arg index="1">
+			<beans:value>25</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:list>
+				<beans:ref bean="fontArial" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="fontArial" class="java.awt.Font">
+		<beans:constructor-arg index="0">
+			<beans:value>Proggy</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:value>0</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:value>10</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>	
+	<beans:bean id="backGenUni" class="com.octo.captcha.component.image.backgroundgenerator.GradientBackgroundGenerator" >
+		<beans:constructor-arg index="0"><beans:value>100</beans:value></beans:constructor-arg><!--背景图片宽度-->
+		<beans:constructor-arg index="1"><beans:value>34</beans:value></beans:constructor-arg><!--背景图片高度-->
+		<beans:constructor-arg type="java.awt.Color" index="2">
+		<beans:ref bean="colorChangeStar"/>
+		</beans:constructor-arg> 
+		<beans:constructor-arg type="java.awt.Color" index="3">
+		<beans:ref bean="colorChangeEnd"/>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="simpleWhitePaster"
+		class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
+		<!-- 验证码 个数最小值 -->
+		<beans:constructor-arg type="java.lang.Integer" index="0">
+			<beans:value>4</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 个数最大值 -->
+		<beans:constructor-arg type="java.lang.Integer" index="1">
+			<beans:value>4</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 颜色 -->
+		<beans:constructor-arg type="java.awt.Color" index="2">
+			<beans:ref bean="colorFont" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="colorFont" class="java.awt.Color">
+		<beans:constructor-arg index="0" type="int"><beans:value>51</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="1" type="int"><beans:value>49</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="2" type="int"><beans:value>53</beans:value></beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="colorChangeStar" class="java.awt.Color" >
+		<beans:constructor-arg index="0" type="int"><beans:value>92</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="1" type="int"><beans:value>161</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="2" type="int"><beans:value>221</beans:value></beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="colorChangeEnd" class="java.awt.Color" >
+		<beans:constructor-arg index="0" type="int"><beans:value>92</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="1" type="int"><beans:value>161</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="2" type="int"><beans:value>221</beans:value></beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="colorRest" class="java.awt.Color" >
+		<beans:constructor-arg index="0" type="int"><beans:value>51</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="1" type="int"><beans:value>49</beans:value></beans:constructor-arg>
+		<beans:constructor-arg index="2" type="int"><beans:value>53</beans:value></beans:constructor-arg>
+	</beans:bean>
+     
+     <!-- end 验证码 -->
+     
+    
+
+</beans:beans>

@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20131111" releaseVersion="7.0.5">
+<TableDataMap>
+<TableData name="报表数据集" class="com.fr.data.impl.XMLTableData">
+<XMLTableDataAttr filePath="http://${reportRequestUrl}/DealDataServlet?m=getReportDataFromCache&amp;reportCacheUUID=${uuid1}" xmlKeyPoint="ITEM" charSet="UTF-8"/>
+<Parameters>
+<Parameter>
+<Attributes name="reportRequestUrl"/>
+<O>
+<![CDATA[localhost:8080/BI]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="uuid1"/>
+<O>
+<![CDATA[3908d55a-5faf-43c2-9985-d4d902a5aa9e]]></O>
+</Parameter>
+</Parameters>
+<XPath length="2">
+<XPathElem idx="0">
+<![CDATA[ITEMS]]></XPathElem>
+<XPathElem idx="1">
+<![CDATA[ITEM]]></XPathElem>
+</XPath>
+<Columns length="9">
+<ColumnElem idx="0" isdate="false">
+<Name>
+<![CDATA[yearPlanProjectId]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="1" isdate="false">
+<Name>
+<![CDATA[proCodeCountry]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="2" isdate="false">
+<Name>
+<![CDATA[proName]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="3" isdate="false">
+<Name>
+<![CDATA[proType]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="4" isdate="false">
+<Name>
+<![CDATA[buildPlace]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="5" isdate="false">
+<Name>
+<![CDATA[investmentTotal]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="6" isdate="false">
+<Name>
+<![CDATA[industry]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="7" isdate="false">
+<Name>
+<![CDATA[actualStartTime]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+<ColumnElem idx="8" isdate="false">
+<Name>
+<![CDATA[actualEndTime]]></Name>
+<Type>
+<![CDATA[0]]></Type>
+</ColumnElem>
+</Columns>
+<DataSource class="com.fr.data.core.datasource.URLDataSource">
+<URL>
+<![CDATA[http://${reportRequestUrl}/DealDataServlet?m=getReportDataFromCache&reportCacheUUID=${uuid1}]]></URL>
+</DataSource>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<RowHeight defaultValue="723900">
+<![CDATA[1143000,1447800,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[0,8305800,8991600,3162300,3733800,3962400,5715000,2857500,2895600,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0">
+<Expand/>
+</C>
+<C c="1" r="0" s="0">
+<O>
+<![CDATA[项目编码]]></O>
+<Expand/>
+</C>
+<C c="2" r="0" s="0">
+<O>
+<![CDATA[项目名称]]></O>
+<Expand/>
+</C>
+<C c="3" r="0" s="0">
+<O>
+<![CDATA[项目类型]]></O>
+<Expand/>
+</C>
+<C c="4" r="0" s="0">
+<O>
+<![CDATA[建设地点]]></O>
+<Expand/>
+</C>
+<C c="5" r="0" s="0">
+<O>
+<![CDATA[总投资（万元）]]></O>
+<Expand/>
+</C>
+<C c="6" r="0" s="0">
+<O>
+<![CDATA[委内行业]]></O>
+<Expand/>
+</C>
+<C c="7" r="0" s="0">
+<O>
+<![CDATA[开工时间]]></O>
+<Expand/>
+</C>
+<C c="8" r="0" s="0">
+<O>
+<![CDATA[竣工时间]]></O>
+<Expand/>
+</C>
+<C c="0" r="1">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="yearPlanProjectId"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="1" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="proCodeCountry"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[条件属性1]]></Name>
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[null]]></O>
+</Compare>
+</Condition>
+<HighlightAction class="com.fr.report.cell.cellattr.highlight.ValueHighlightAction">
+<O>
+<![CDATA[]]></O>
+</HighlightAction>
+</Highlight>
+</HighlightList>
+<Expand dir="0"/>
+</C>
+<C c="2" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="proName"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="3" r="1" s="2">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="proType"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[条件属性1]]></Name>
+<Condition class="com.fr.data.condition.ListCondition">
+<JoinCondition join="1">
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[NULL]]></O>
+</Compare>
+</Condition>
+</JoinCondition>
+<JoinCondition join="1">
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[0]]></O>
+</Compare>
+</Condition>
+</JoinCondition>
+<JoinCondition join="1">
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[null]]></O>
+</Compare>
+</Condition>
+</JoinCondition>
+</Condition>
+<HighlightAction class="com.fr.report.cell.cellattr.highlight.ValueHighlightAction">
+<O>
+<![CDATA[]]></O>
+</HighlightAction>
+</Highlight>
+</HighlightList>
+<Expand dir="0"/>
+</C>
+<C c="4" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="buildPlace"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[条件属性1]]></Name>
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[null]]></O>
+</Compare>
+</Condition>
+<HighlightAction class="com.fr.report.cell.cellattr.highlight.ValueHighlightAction">
+<O>
+<![CDATA[]]></O>
+</HighlightAction>
+</Highlight>
+</HighlightList>
+<Expand dir="0"/>
+</C>
+<C c="5" r="1" s="3">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="investmentTotal"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[条件属性1]]></Name>
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[null]]></O>
+</Compare>
+</Condition>
+<HighlightAction class="com.fr.report.cell.cellattr.highlight.ValueHighlightAction">
+<O>
+<![CDATA[]]></O>
+</HighlightAction>
+</Highlight>
+</HighlightList>
+<Expand dir="0"/>
+</C>
+<C c="6" r="1" s="1">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="industry"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<HighlightList>
+<Highlight class="com.fr.report.cell.cellattr.highlight.DefaultHighlight">
+<Name>
+<![CDATA[条件属性1]]></Name>
+<Condition class="com.fr.data.condition.ObjectCondition">
+<Compare op="0">
+<O>
+<![CDATA[null]]></O>
+</Compare>
+</Condition>
+<HighlightAction class="com.fr.report.cell.cellattr.highlight.ValueHighlightAction">
+<O>
+<![CDATA[]]></O>
+</HighlightAction>
+</Highlight>
+</HighlightList>
+<Expand dir="0"/>
+</C>
+<C c="7" r="1" s="2">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="actualStartTime"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="8" r="1" s="2">
+<O t="DSColumn">
+<Attributes dsName="报表数据集" columnName="actualEndTime"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting>
+<PaperSize width="50400000" height="42768000"/>
+<Margin top="986400" left="2743200" bottom="986400" right="2743200"/>
+</PaperSetting>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="80"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="2" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+<Style horizontal_alignment="4" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border/>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="HAF"/>
+<PreviewType PreviewType="0"/>
+</WorkBook>

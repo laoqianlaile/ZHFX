@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<constant name="struts.devMode" value="false" />
+	<!--该属性指定视图标签默认的视图主题,该属性的默认值是 xhtml-->
+	<constant name="struts.ui.theme" value="simple" />
+    <!-- 	   最大上传100M 单位B   -->
+	<constant name="struts.multipart.maxSize" value="10485760" />
+	<constant name="struts.codebehind.pathPrefix" value="/WEB-INF/jsp/" />
+	<constant name="struts.enable.SlashesInActionNames" value="true" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.i18n.reload" value="true"></constant>
+	<constant name="struts.custom.i18n.resources" value="ApplicationResources,errors" />
+	<constant name="struts.action.excludePattern" value="/ReportServer,/ReportServer/.*,/LoginServlet,/DealDataServlet,/ShitServlet"/>
+	<package name="default" extends="struts-default">
+		<interceptors>
+			<interceptor-stack name="crudStack">
+				<interceptor-ref name="timeoutInterceptor" />
+                <interceptor-ref name="paramsPrepareParamsStack" />
+		        <interceptor-ref name="defaultStack">
+					<!--覆盖defultStack中的exception设置，启用日志功能-->
+					<param name="exception.logEnabled">true</param>
+					<param name="exception.logLevel">ERROR</param>
+				</interceptor-ref>
+				<interceptor-ref name="exceptionInterceptor" />
+			</interceptor-stack>
+			<interceptor name="exceptionInterceptor" class="com.strongit.iss.interceptor.ExceptionInterceptor" />
+			<interceptor name="timeoutInterceptor" class="com.strongit.iss.interceptor.TimeoutInterceptor" />
+        </interceptors>
+        
+        <default-interceptor-ref name="crudStack" />
+
+		<!-- 全局结果定义 -->
+		<global-results>
+            <result name="error">/common/error/error.jsp</result>
+			<result name="login">/index.html</result>
+        </global-results>
+
+		<!-- 全局异常定义 -->
+		<global-exception-mappings>
+			<exception-mapping result="error" exception="com.strongit.iss.exception.DAOException"></exception-mapping>
+			<exception-mapping result="error" exception="com.strongit.iss.exception.BusinessServiceException"></exception-mapping>
+			<exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+		</global-exception-mappings>
+		
+		<action name="fileNameRedirectAction" class="com.strongit.iss.action.FileNameRedirectAction" method="redirect"></action>
+	</package>
+</struts>

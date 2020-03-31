@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<!-- 配置文件 --><!-- 加载缓存任务 -->
+	<bean id="loadSystemCacheTask" class="com.strongit.iss.task.LoadSystemCacheTask"></bean>
+	<bean id="springContextUtil" class="com.strongit.iss.common.SpringContextUtil" lazy-init="false"></bean>
+
+
+	<bean id="screenSaverService" class="com.strongit.iss.service.impl.ScreenSaverServiceImpl"></bean>
+    <!--缓存数据-->
+	<bean id="reportCacheService" class="com.strongit.iss.service.impl.ReportCacheServiceImpl"></bean>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="locations">
+			<list>
+				<value>/WEB-INF/config/appconfig.properties</value>
+			</list>
+		</property>
+	</bean>
+	<!-- <bean class="com.strongit.iss.message.MessageLoader" lazy-init="false">
+		<property name="pathName" value="../config/messages.properties"></property>
+	</bean> -->
+	<bean class="com.strongit.iss.common.PropertiesUtil" lazy-init="false">
+		<property name="pathName" value="../config/commonConfig.properties"></property>
+	</bean>
+
+	<!-- 使用annotation自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:annotation-config />
+	<context:component-scan base-package="com.strongit" />
+
+	<bean id="daoContext" class="com.strongit.iss.dao.DaoContext">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 数据源配置 -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}" />
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="user" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
+		<property name="minPoolSize" value="${jdbc.minPoolSize}" />
+		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
+		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
+		<property name="maxStatements" value="${jdbc.maxStatements}" />
+		<property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
+		<property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}" />
+		<property name="acquireRetryDelay" value="${jdbc.acquireRetryDelay}" />
+		<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+		<property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}" />
+		<property name="breakAfterAcquireFailure" value="${jdbc.breakAfterAcquireFailure}" />
+	</bean>
+	<!--     <jee:jndi-lookup id="dataSource" jndi-name="jdbc/dm" /> -->
+	<!-- hibernate settings -->
+	<bean id="sessionFactory"
+		  class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		  p:dataSource-ref="dataSource">
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					${hibernate.dialect}
+				</prop>
+				<prop key="hibernate.show_sql">
+					${hibernate.show_sql}
+				</prop>
+				<prop key="hibernate.format_sql">
+					${hibernate.format_sql}
+				</prop>
+				<prop key="hibernate.use_sql_comments">
+					${hibernate.use_sql_comments}
+				</prop>
+				<prop key="hibernate.jdbc.fetch_size">
+					${hibernate.jdbc.fetch_size}
+				</prop>
+				<prop key="hibernate.jdbc.batch_size">
+					${hibernate.jdbc.batch_size}
+				</prop>
+				<prop key="hibernate.generate_statistics">
+					${hibernate.generate_statistics}
+				</prop>
+				<prop key="hibernate.cache.provider_class">
+					${hibernate.cache.provider_class}
+				</prop>
+				<prop key="hibernate.connection.isolation">
+					${hibernate.connection.isolation}
+				</prop>
+				<prop key="hibernate.connection.autocommit">
+					${hibernate.connection.autocommit}
+				</prop>
+				<prop key="hibernate.autoReconnect">
+					${hibernate.autoReconnect}
+				</prop>
+				<prop key="hibernate.connection.release_mode">
+					after_transaction
+				</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			 <list>
+				<value>com.strongit.iss.entity</value>
+				<value>com.strongit.iss.neuentity</value>
+			</list>
+	   </property>
+	</bean>
+
+    <!-- 定义EhCacheManager -->
+    <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <!-- 指定配置文件的位置 -->
+        <property name="configLocation" value="/WEB-INF/config/ehcache.xml"/>
+        <!-- 指定新建的CacheManager的名称 -->
+        <property name="cacheManagerName" value="cacheManager"/>
+    </bean>
+    
+    <!-- 定义一个Ehcache 用于报表 -->
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheName">
+			<value>ehcache</value>
+		</property>
+    </bean>
+    <!-- 定义一个Ehcache 用于永久-->
+    <bean id="everCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheName">
+			<value>everCache</value>
+		</property>
+    </bean>
+    <!-- 定义一个Ehcache 用于临时-->
+     <bean id="tempCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheName">
+			<value>tempCache</value>
+		</property>
+    </bean>
+	<!-- 业务类中的@Transaction注解进行驱动 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- 配置事务管理器 指定其作用的sessionFactory把事务交给Spring去处理 -->
+	<bean id="transactionManager"
+		  class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<!--start 验证码 -->
+	<!--start 验证码 -->
+	<bean id="jcaptchaService"
+		  class="com.octo.captcha.service.image.DefaultManageableImageCaptchaService">
+		<constructor-arg type="com.octo.captcha.service.captchastore.CaptchaStore" index="0">
+			<ref bean="sessionCaptchaStore"/>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="imageEngine" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<value>180</value>
+		</constructor-arg>
+		<constructor-arg index="3">
+			<value>180000</value>
+		</constructor-arg>
+		<constructor-arg index="4">
+			<value>75000</value>
+		</constructor-arg>
+	</bean>
+	<bean id="sessionCaptchaStore" class="com.strongit.iss.ui.SessionCaptchaStore"/>
+	<bean id="imageEngine"
+		  class="com.octo.captcha.engine.GenericCaptchaEngine">
+		<constructor-arg index="0">
+			<list>
+				<ref bean="CaptchaFactory" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="CaptchaFactory"
+		  class="com.octo.captcha.image.gimpy.GimpyFactory">
+		<constructor-arg>
+			<ref bean="wordgen" />
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="wordtoimage" />
+		</constructor-arg>
+	</bean>
+	<!--使用字典单词作为验证码-->
+	<!--  <bean id="wordgen" class= "com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator" >
+		<constructor-arg><ref bean="filedict"/></constructor-arg>
+		</bean>
+	-->
+	<!--使用随机数作为验证码-->
+	<bean id="wordgen"
+		  class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">
+		<constructor-arg>
+			<value>123456789QWERTYUIOPASDFGHJKLZXCVBNM</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="wordtoimage"
+		  class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+		<constructor-arg index="0">
+			<ref bean="fontGenRandom" />
+		</constructor-arg>
+		<constructor-arg index="1">
+			<ref bean="backGenUni" />
+		</constructor-arg>
+		<constructor-arg index="2">
+			<ref bean="simpleWhitePaster" />
+		</constructor-arg>
+	</bean>
+
+	<bean id="filedict"
+		  class="com.octo.captcha.component.word.FileDictionary">
+		<constructor-arg index="0">
+			<value>toddlist</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="fontGenRandom"
+		  class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+		<!-- 验证码 字体最小值 -->
+		<constructor-arg index="0">
+			<value>20</value>
+		</constructor-arg>
+		<!-- 验证码 字体最大值 -->
+		<constructor-arg index="1">
+			<value>25</value>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<list>
+				<ref bean="fontArial" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="fontArial" class="java.awt.Font">
+		<constructor-arg index="0">
+			<value>Proggy</value>
+		</constructor-arg>
+		<constructor-arg index="1">
+			<value>0</value>
+		</constructor-arg>
+		<constructor-arg index="2">
+			<value>10</value>
+		</constructor-arg>
+	</bean>
+	<bean id="backGenUni" class="com.octo.captcha.component.image.backgroundgenerator.GradientBackgroundGenerator" >
+		<constructor-arg index="0"><value>100</value></constructor-arg><!--背景图片宽度-->
+		<constructor-arg index="1"><value>34</value></constructor-arg><!--背景图片高度-->
+		<constructor-arg type="java.awt.Color" index="2">
+			<ref bean="colorChangeStar"/>
+		</constructor-arg>
+		<constructor-arg type="java.awt.Color" index="3">
+			<ref bean="colorChangeEnd"/>
+		</constructor-arg>
+	</bean>
+	<bean id="simpleWhitePaster"
+		  class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
+		<!-- 验证码 个数最小值 -->
+		<constructor-arg type="java.lang.Integer" index="0">
+			<value>4</value>
+		</constructor-arg>
+		<!-- 验证码 个数最大值 -->
+		<constructor-arg type="java.lang.Integer" index="1">
+			<value>4</value>
+		</constructor-arg>
+		<!-- 验证码 颜色 -->
+		<constructor-arg type="java.awt.Color" index="2">
+			<ref bean="colorFont" />
+		</constructor-arg>
+	</bean>
+	<bean id="colorFont" class="java.awt.Color">
+		<constructor-arg index="0" type="int"><value>51</value></constructor-arg>
+		<constructor-arg index="1" type="int"><value>49</value></constructor-arg>
+		<constructor-arg index="2" type="int"><value>53</value></constructor-arg>
+	</bean>
+	<bean id="colorChangeStar" class="java.awt.Color" >
+		<constructor-arg index="0" type="int"><value>92</value></constructor-arg>
+		<constructor-arg index="1" type="int"><value>161</value></constructor-arg>
+		<constructor-arg index="2" type="int"><value>221</value></constructor-arg>
+	</bean>
+	<bean id="colorChangeEnd" class="java.awt.Color" >
+		<constructor-arg index="0" type="int"><value>92</value></constructor-arg>
+		<constructor-arg index="1" type="int"><value>161</value></constructor-arg>
+		<constructor-arg index="2" type="int"><value>221</value></constructor-arg>
+	</bean>
+	<bean id="colorRest" class="java.awt.Color" >
+		<constructor-arg index="0" type="int"><value>51</value></constructor-arg>
+		<constructor-arg index="1" type="int"><value>49</value></constructor-arg>
+		<constructor-arg index="2" type="int"><value>53</value></constructor-arg>
+	</bean>
+	<!-- end 验证码 -->
+
+</beans>

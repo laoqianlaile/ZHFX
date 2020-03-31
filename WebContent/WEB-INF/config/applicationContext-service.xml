@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd"
+	default-autowire="byName" default-lazy-init="true">
+
+	<!-- 加载缓存任务 -->
+	<bean id="loadSystemCacheTask" class="com.strongit.iss.task.LoadSystemCacheTask"></bean>
+	<!-- 报表加载数据 -->
+	<bean id="loadReportDataTask" class="com.strongit.iss.task.LoadReportDataTask"></bean>
+
+	<!-- 项目信息校验 -->
+<!-- 	<bean id="projectCheckService" class="com.strongit.iss.service.check.impl.ProjectCheckService"> -->
+<!-- 		<property name="lenient" value="${project.item.check.lenient}"></property> -->
+<!-- 	</bean> -->
+
+	
+	<!-- Excel解析组件 -->
+	<bean id="projectExcelService" class="com.strongit.iss.service.excel.impl.ProjectExcelService">
+		<property name="exportExcelLimit" value="${project.export.excel.limit}"/>
+ 		<property name="importLimit" value="${project.import.num.limit}"/> 
+	</bean>
+
+	<!-- 项目指标管理组件 -->
+<!-- 	<bean id="projectItemService" class="com.strongit.iss.service.item.impl.ProjectItemService"> -->
+		<!-- 项目指标管理组件内部需要用到数据库的UUID生成函数,根据数据库的不同，需要在此配置不同的函数 -->
+<!-- 		<property name="guidDBExp" value="newid()"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 项目上报情况查询组件(仅用于_N系统) -->
+<!-- 	<bean id="submitInfoService" class="com.strongit.iss.service.project.impl.SubmitInfoService"> -->
+<!-- 	</bean> -->
+	
+	<!-- 项目信息管理组件-->
+<!-- 	<bean id="projectService" class="com.strongit.iss.service.project.impl.ProjectService"> -->
+<!-- 		<property name="deploymentEnvironment" -->
+<!-- 			value="${iss.deploymentEnvironment}"></property> -->
+<!-- 	</bean> -->
+	
+	<!-- 用户自定义查询 -->
+<!-- 	<bean id="userQueryService" class="com.strongit.iss.service.project.impl.UserQueryService"> -->
+<!-- 	</bean> -->
+
+
+	<!-- 项目查重组件-->
+<!-- 	<bean id="projectIdentifyService" class="com.strongit.iss.service.identify.impl.ProjectIdentifyService"> -->
+<!-- 		<property name="deploymentEnvironment" -->
+<!-- 			value="${iss.deploymentEnvironment}" /> -->
+<!-- 	</bean> -->
+	
+	<!-- 用户设置服务组件 -->
+	<bean id="userSettings" class="com.strongit.iss.service.setting.impl.UserSettingService">
+	</bean>
+	
+	<!-- 系统设置服务组件 -->
+	<bean id="systemSettings" class="com.strongit.iss.service.setting.impl.SystemSettingService">
+	</bean>
+</beans>

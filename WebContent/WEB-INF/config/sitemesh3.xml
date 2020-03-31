@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<sitemesh>
+	<content-processor class="com.strongit.iss.common.SitemeshContentProcessor">
+        <tag-rule-bundle class="org.sitemesh.content.tagrules.html.DivExtractingTagRuleBundle" />
+    </content-processor>
+
+    <includeErrorPages>False</includeErrorPages>
+    
+    <mapping path="/*" decorator="/WEB-INF/jsp/shared/layout.jsp"/>
+    
+    <!-- Exclude path from decoration. -->
+    <mapping path="/j_spring_security_logout" exclue="true"/>
+    <mapping path="/login.jsp" exclue="true"/>
+    <mapping path="/common/error/error.jsp" exclue="true"/>
+    <mapping path="/ReportServer" exclue="true"/>
+    <mapping path="/error" exclue="true"/>
+    <mapping path="/ajaxerror" exclue="true"/>
+    <mapping path="/404" exclue="true"/>
+    <!--<mapping path="/api/*" exclue="true"/>-->
+    <mapping path="/js/*" exclue="true"/>
+    <mapping path="/css/*" exclue="true"/>
+    <mapping path="/images/*" exclue="true"/>
+    <mapping path="/fonts/*" exclue="true"/>
+
+    <mapping path="/upload/api_h5fileupload" exclue="true"/>
+</sitemesh>

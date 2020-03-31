@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fsconfig xmlVersion="20131111" releaseVersion="7.0.5" useFS="true" homePageURL="/WebReport/ReportServer?reportlet=demo/analytics/product.cpt" loginTitle="数据决策系统" isLoginPageImg="false" hasNavigation="true" firstUse="false" mobiledevbind="false" style="lightblue" controlType="0">
+<tabledataConrol dsSetting="{&quot;post&quot;:4,&quot;encrypt&quot;:0,&quot;department&quot;:3,&quot;myencrypt&quot;:&quot;&quot;,&quot;name&quot;:1,&quot;userName&quot;:0,&quot;dsName&quot;:&quot;用户信息表&quot;,&quot;password&quot;:2}">
+<JRole>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,department,,.,,post,,.,,description]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.String,java.lang.String]]></ColumnTypes>
+<RowData>
+<![CDATA[1Z<_qDW10nD9mF8E5's[s2C;C:Nl-b1?Nu8eaRD#qI`aX5O3%EI+c0ljja667]A<'-)KrmJd/
+8";1+kpnM'kA'T'tBo/Au,8#rM?ifBa;X>Ft5N!&Y;f~
+]]></RowData>
+</JRole>
+<SRole>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,rolename,,.,,description]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.String]]></ColumnTypes>
+</SRole>
+<SRole_User>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,sroleid,,.,,username]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.String]]></ColumnTypes>
+</SRole_User>
+<JRolePrivilege>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,roleid,,.,,type,,.,,entryid]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.Integer,java.lang.String]]></ColumnTypes>
+<RowData>
+<![CDATA[4c[>j`%VT$hc;U(aA105A*6c5^E&V+@L\>X<feO:+IETU6ph-U<'F3*41PQ%fF:?QL5IO_s+
+,o@3#sh0n4;N(_I^-WQ;q'b[ug$nSZ.X)^$F@RVj;_P;uU!#rpJ_M~
+]]></RowData>
+</JRolePrivilege>
+<SRolePrivilege>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,roleid,,.,,type,,.,,entryid]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.Integer,java.lang.String]]></ColumnTypes>
+</SRolePrivilege>
+<SRoleModule>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,roleid,,.,,type,,.,,moduleid]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.Integer,java.lang.String]]></ColumnTypes>
+</SRoleModule>
+<CustomRolesWithPlate/>
+<CompanyRolesWithPlate/>
+</tabledataConrol>
+<systemManagerFavoriteAndADHOCReport>
+<sysFavorite>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,type,,.,,entryid]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.Integer,java.lang.String]]></ColumnTypes>
+</sysFavorite>
+<sysADHOCNode>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,path,,.,,reportName,,.,,createTime,,.,,description]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String]]></ColumnTypes>
+</sysADHOCNode>
+<sysTaskNode>
+<Parameters/>
+<DSName>
+<![CDATA[]]></DSName>
+<ColumnNames>
+<![CDATA[id,,.,,taskInfoID]]></ColumnNames>
+<ColumnTypes>
+<![CDATA[java.lang.String,java.lang.String]]></ColumnTypes>
+</sysTaskNode>
+</systemManagerFavoriteAndADHOCReport>
+<navigationImages>
+<navigationImg type="04" cls="fs_csview_naviimgs3" id=""/>
+<navigationImg type="08" cls="fs_csview_naviimgs4" id=""/>
+<navigationImg type="05" cls="fs_csview_naviimgs8" id=""/>
+<navigationImg type="02" cls="fs_csview_naviimgs9" id=""/>
+<navigationImg type="03" cls="fs_csview_naviimgs1" id=""/>
+<navigationImg type="09" cls="fs_csview_naviimgs6" id=""/>
+<navigationImg type="015" cls="fs_csview_naviimgs5" id=""/>
+<navigationImg type="031" cls="fs_csview_naviimgs7" id=""/>
+<navigationImg type="035" cls="fs_csview_naviimgs10" id=""/>
+<navigationImg type="01" cls="fs_csview_naviimgs4" id=""/>
+</navigationImages>
+</fsconfig>

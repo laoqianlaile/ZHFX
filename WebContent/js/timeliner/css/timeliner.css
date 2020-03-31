@@ -1,0 +1,162 @@
+/*
+ * CSS for Timeliner 1.2
+ *
+ * This CSS is for the plugin functionality
+ * Use timeliner_styling.css for personal styling.
+ * by_hanwy_20170111
+ */
+.timeliner{
+	margin:0;
+	padding:0;
+	position:relative;
+	display:none;
+}
+.timeliner .slide{
+	margin:0;
+	padding:0;
+	list-style:none;
+	overflow:hidden;
+	position:absolute;
+	display:block;
+}
+.timeliner .timeline{
+	position:absolute;
+	z-index:2;
+	list-style:none;
+}
+.timeliner .innertimeline{
+	position:absolute;
+	bottom:0;
+	z-index:3;
+	overflow:hidden;
+}
+.timeliner .timedisplay{
+	position:absolute;
+	text-align:right;
+	cursor:default;
+	white-space:nowrap;
+}
+.timeliner .node{
+	position:absolute;
+	z-index:4;
+	cursor:pointer;
+}
+.timeliner .tooltip{
+	position:absolute;
+	white-space:nowrap;
+	display:none;
+}
+.timeliner .pause,.timeliner .play,.timeliner .previous,.timeliner .next{
+	position:absolute;
+	list-style:none;
+	z-index:3;
+	cursor:pointer;
+}
+.timeliner .previous,.timeliner .next{
+	z-index:2;
+}
+.timeliner img{
+	vertical-align:bottom
+}
+
+/* The container */
+#example1{
+	background:#fff url(loading.gif) center no-repeat;
+}
+/* Each slide */
+#example1 .slide{
+	background:#fff url(slide2.jpg);
+	padding:0px;
+	font: 20px 'segoe ui',helvetica,arial,sans-serif;
+	line-height:120%;
+	color:#3c3c3c;
+}
+/* The timeline background */
+#example1 .timeline{
+	display:none;
+	background:#ddd;
+	border-top:1px solid #ccc;
+	border-bottom:1px solid #fff;
+}
+/* The timeline fill bar */
+#example1 .innertimeline{
+	background:#cf3300;
+}
+/* The time display */
+#example1 .timedisplay{
+	color:#777;
+}
+/* Each node */
+#example1 .node{
+	background:url(node.png) center no-repeat;
+	width:26px;
+	height:26px;
+}
+/* The active node */
+#example1 .node_active{
+	background:url(node_active.png) center no-repeat;
+}
+/* Each node tooltip */
+#example1 .tooltip{
+	background:#fff;
+	padding:5px 8px;
+	-webkit-border-radius:6px;
+	-moz-border-radius:6px;
+	border-radius:6px;
+	opacity:0.8;
+	filter:alpha(opacity=80);
+}
+/* The time display inside a tooltip */
+#example1 .tooltiptime{
+	font-size:8pt;
+	font-weight:bold;
+}
+/* The pause/play/previous/next buttons */
+#example1 .pause,
+#example1 .play,
+#example1 .previous,
+#example1 .next{
+	width:64px;
+	height:63px;
+	-webkit-box-shadow:0 0 10px #bbb;
+	-moz-box-shadow:0 0 10px #bbb;
+	box-shadow:0 0 10px #bbb;
+	top:auto !important;
+	left:auto !important;
+	right:auto !important;
+	bottom:5px;
+}
+#example1 .pause,
+#example1 .play{
+	right:5px !important;
+}
+/* The pause button */
+#example1 .pause{
+	background:#fff url(pause.png) center no-repeat;
+}
+/* The play button */
+#example1 .play{
+	background:#fff url(play.png) center no-repeat;
+}
+/* The previous button */
+#example1 .previous{
+	background:#fff url(previous.png) center no-repeat;
+	right:133px !important;
+}
+/* The next button */
+#example1 .next{
+	background:#fff url(next.png) center no-repeat;
+	right:69px !important;
+}
+
+/* Just for the demos: */
+body{
+	margin:0;
+	font:15px 'segoe ui',arial,sans-serif;
+}
+div#timeline-content{
+	width:1920px;
+	height:1080px;
+	margin:0 auto;
+	padding:0;
+}

@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20131111" releaseVersion="7.0.5">
+<TableDataMap>
+<TableData name="ds1" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="division_path"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[GBase]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[${
+if(and(len(division_path)<>0,count(split(division_path,">>"))=1),
+CONCATENATE("SELECT BB.S_NAME AS AREA_NAME,AA.CODE_VALUE,AA.CODE_NAME,AA.SUM_NUM,AA.QDW_NUM,AA.QDN_NUM FROM (SELECT B.CODE2 AS AREA_VALUE,C.CODE_VALUE,C.CODE_NAME,SUM(NUM) AS SUM_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单外' THEN 1 ELSE 0 END) AS QDW_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单内' THEN 1 ELSE 0 END) AS QDN_NUM FROM FA_SXQD A,DIM_DIVISION B,DIM_SPCJ C WHERE A.DIVISION_CODE=B.CODE AND A.SPCJ=C.CODE_VALUE AND B.S_NAME1='",indexofarray(split(division_path,">>"),1),"' GROUP BY B.CODE2,C.CODE_VALUE,C.CODE_NAME) AA,DIM_DIVISION BB WHERE AA.AREA_VALUE=BB.CODE ORDER BY AA.SUM_NUM DESC"),
+if(and(len(division_path)<>0,count(split(division_path,">>"))=2),
+CONCATENATE("SELECT BB.S_NAME AS AREA_NAME,AA.CODE_VALUE,AA.CODE_NAME,AA.SUM_NUM,AA.QDW_NUM,AA.QDN_NUM FROM (SELECT B.CODE AS AREA_VALUE,C.CODE_VALUE,C.CODE_NAME,SUM(NUM) AS SUM_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单外' THEN 1 ELSE 0 END) AS QDW_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单内' THEN 1 ELSE 0 END) AS QDN_NUM FROM FA_SXQD A,DIM_DIVISION B,DIM_SPCJ C WHERE A.DIVISION_CODE=B.CODE AND A.SPCJ=C.CODE_VALUE AND B.S_NAME2='",indexofarray(split(division_path,">>"),2),"' GROUP BY B.CODE,C.CODE_VALUE,C.CODE_NAME) AA,DIM_DIVISION BB WHERE AA.AREA_VALUE=BB.CODE ORDER BY AA.SUM_NUM DESC"),
+"SELECT BB.S_NAME AS AREA_NAME,AA.CODE_VALUE,AA.CODE_NAME,AA.SUM_NUM,AA.QDW_NUM,AA.QDN_NUM FROM (SELECT B.CODE1 AS AREA_VALUE,C.CODE_VALUE,C.CODE_NAME,SUM(NUM) AS SUM_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单外' THEN 1 ELSE 0 END) AS QDW_NUM,SUM(CASE ISGJSXQD WHEN '国家事项清单内' THEN 1 ELSE 0 END) AS QDN_NUM FROM FA_SXQD A,DIM_DIVISION B,DIM_SPCJ C WHERE A.DIVISION_CODE=B.CODE AND A.SPCJ=C.CODE_VALUE GROUP BY B.CODE1,C.CODE_VALUE,C.CODE_NAME) AA,DIM_DIVISION BB WHERE AA.AREA_VALUE=BB.CODE ORDER BY AA.SUM_NUM DESC"))}]]></Query>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<ColumnPrivilegeControl/>
+<RowPrivilegeControl/>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,723900,1333500,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[2743200,4610100,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" rs="3" s="0">
+<O>
+<![CDATA[序号]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="0" rs="3" s="0">
+<O t="BiasTextPainter">
+<IsBackSlash value="false"/>
+<![CDATA[审批层级|地区]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="0" rs="3" s="0">
+<O>
+<![CDATA[事项清单数]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="0" cs="4" s="0">
+<O>
+<![CDATA[合计]]></O>
+<PrivilegeControl/>
+</C>
+<C c="7" r="0" cs="4" s="0">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="CODE_NAME"/>
+<Complex order="1"/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<SortFormula>
+<![CDATA[CODE_VALUE]]></SortFormula>
+<Result>
+<![CDATA[$$$]]></Result>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="1"/>
+</C>
+<C c="3" r="1" cs="2" s="0">
+<O>
+<![CDATA[国家事项清单内]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="1" cs="2" s="0">
+<O>
+<![CDATA[国家事项清单外]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="7" r="1" cs="2" s="0">
+<O>
+<![CDATA[国家事项清单内]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="9" r="1" cs="2" s="0">
+<O>
+<![CDATA[国家事项清单外]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="2" s="0">
+<O>
+<![CDATA[数量]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="2" s="0">
+<O>
+<![CDATA[占比]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="2" s="0">
+<O>
+<![CDATA[数量]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="6" r="2" s="0">
+<O>
+<![CDATA[占比]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="7" r="2" s="0">
+<O>
+<![CDATA[数量]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="8" r="2" s="0">
+<O>
+<![CDATA[占比]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="9" r="2" s="0">
+<O>
+<![CDATA[数量]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="10" r="2" s="0">
+<O>
+<![CDATA[占比]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="3" s="1">
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="1" r="3" s="2">
+<O>
+<![CDATA[合计]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="2" r="3" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(C5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="3" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(D5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="3" s="2">
+<O>
+<![CDATA[-]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="3" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(F5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="6" r="3" s="2">
+<O>
+<![CDATA[-]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="7" r="3" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(H5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="8" r="3" s="2">
+<O>
+<![CDATA[-]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="9" r="3" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(J5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="10" r="3" s="2">
+<O>
+<![CDATA[-]]></O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="0" r="4" s="3">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=seq()]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand leftParentDefault="false" left="B5"/>
+</C>
+<C c="1" r="4" s="3">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="AREA_NAME"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand dir="0"/>
+</C>
+<C c="2" r="4" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="SUM_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="3" r="4" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="QDN_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="4" r="4" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=D5 / C5]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="5" r="4" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="QDW_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="6" r="4" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=F5 / C5]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="7" r="4" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="QDN_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="8" r="4" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=H5 / (H5 + J5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="9" r="4" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="QDW_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.SummaryGrouper">
+<FN>
+<![CDATA[com.fr.data.util.function.SumFunction]]></FN>
+</RG>
+<Parameters/>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+<C c="10" r="4" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=J5 / (H5 + J5)]]></Attributes>
+</O>
+<PrivilegeControl/>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting>
+<PaperSize width="85536000" height="121104000"/>
+<Margin top="986400" left="2743200" bottom="986400" right="2743200"/>
+</PaperSetting>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+<PrivilegeControl/>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="false" delayPlaying="false" windowPosition="1" align="1"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat">
+<![CDATA[#0.00%]]></Format>
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="HAF"/>
+<PreviewType PreviewType="0"/>
+</WorkBook>

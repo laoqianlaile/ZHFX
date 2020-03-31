@@ -1,0 +1,71 @@
+﻿@CHARSET "UTF-8";
+*{
+	font-family:Microsoft YaHei,Verdana,simsun, Geneva, sans-serif;
+}
+.reportPane.ui-state-enabled.fr-quick-border-layout {
+    background: #041e35;
+}
+.report-background{
+	background: #041e35!important;
+}
+div.pageContentDIV.contentDIV{
+background: #041e35;
+border:0px;
+width:100%;
+}
+.page-block{
+float:none;
+}
+.ui-state-disabled{
+	opacity: .7;
+    filter: Alpha(Opacity=70);
+    -moz-opacity: .7;
+}
+/*翻页*/
+.x-toolbar {
+    background: #0d3e6f;
+    height:32px!important;
+}
+.x-toolbar > table{
+    height:32px!important;
+}
+.fr-btn button{
+	color:#fff;
+}
+.fr-label {
+    color: #fff!important;
+}
+.fr-texteditor {
+    height: 18px!important;
+    line-height: 18px!important;
+    border: 1px solid #2668ab;
+    background: #041e35;
+    color: #05a5e8;
+}
+.x-table td.f10-0{
+	background:#0d3e6f;    
+	border-top: #136fa2 1px solid;
+    border-bottom: #136fa2 1px solid;
+    border-left: #136fa2 1px dotted;
+    border-right: #136fa2 1px dotted;
+	color:#00d0fe;
+	text-align:center;
+	height:16px;
+	line-height:20px;
+	padding:2px 2px;
+	font-size:14px;
+}
+.x-table td{
+	background:#041e35;
+	background-color:rgba(4,30,53,.8);
+	border-top: #136fa2 1px solid;
+    border-bottom: #136fa2 1px solid;
+    border-left: #136fa2 1px dotted;
+    border-right: #136fa2 1px dotted;
+	color:#fff;
+	height:18px;
+	line-height:18px;
+	padding:2px 2px;
+	font-size:14px;
+	font-family:'Microsoft YaHei',Verdana,simsun, Geneva, sans-serif;
+}

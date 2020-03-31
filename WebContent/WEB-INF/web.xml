@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+
+	<context-param>
+	 	<param-name>webAppRootKey</param-name>
+	 	<param-value>ComAnalysis</param-value>
+	</context-param>
+	
+	<display-name>ComAnalysis</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/config/log4j.properties</param-value>
+	</context-param>
+
+	<!-- Spring ApplicationContext配置文件的路径,可使用通配符,多个路径用,号分隔 此参数用于后面的Spring Context 
+			,
+			/WEB-INF/config/applicationContext-service.xml,
+			/WEB-INF/config/applicationContext-security.xml,
+			/WEB-INF/config/applicationContext-quartz.xml
+		Loader -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/config/applicationContext.xml
+<!-- 			/WEB-INF/config/applicationContext-quartz.xml -->
+		</param-value>
+	</context-param>	
+ 
+	<!-- listener -->
+	<listener> 
+	   <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class> 
+	</listener>
+	<!--Spring ApplicationContext 载入 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- Spring 刷新Introspector防止内存泄露 -->
+	<listener>
+		<listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+	</listener>
+<filter>
+        <filter-name>commonFilter</filter-name>
+        <filter-class>com.strongit.iss.filter.CommonFilter</filter-class>
+</filter>
+ <filter-mapping>
+     <filter-name>commonFilter</filter-name>
+     <url-pattern>/*</url-pattern>
+ </filter-mapping>
+<!-- ============================= 单点登录配置的结束 ================================ -->
+
+	<!-- Hibernate Open Session In View filter -->
+	<filter>
+		<filter-name>osivFilter</filter-name>
+		<filter-class>
+			org.springframework.orm.hibernate3.support.OpenSessionInViewFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>osivFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+<!-- 	<filter> -->
+<!-- 		<filter-name>springSecurityFilterChain</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> -->
+<!-- 	</filter> -->
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>springSecurityFilterChain</filter-name> -->
+<!-- 		<url-pattern>/*</url-pattern> -->
+<!-- 	</filter-mapping> -->
+
+	<!-- 字符转码，处理中文乱码问题 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>struts2</filter-name>
+		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+		<init-param>
+               <param-name>config</param-name>
+               <param-value>struts-default.xml,struts-plugin.xml,../config/struts.xml</param-value>
+         </init-param>
+		<init-param>
+			<param-name>actionPackages</param-name>
+			<param-value>com.strongit.iss.action</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>struts2</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+	<!-- 缓存加载 -->
+	<servlet>
+		<servlet-name>LoadSystemParamServlet</servlet-name>
+		<servlet-class>com.strongit.iss.servlet.LoadSystemCacheServlet</servlet-class>
+		<init-param>
+			<param-name>running</param-name>
+			<param-value>1</param-value>
+		</init-param>
+		<init-param>
+			<param-name>intervalMin</param-name>
+			<param-value>30</param-value>
+		</init-param>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+<!-- 	 帆软BI    start -->
+ <mime-mapping>
+  <extension>msi</extension>
+  <mime-type>application/x-msi</mime-type>
+</mime-mapping>
+<servlet>
+	 <servlet-name>ReportServer</servlet-name>
+	 <servlet-class>com.fr.web.ReportServlet</servlet-class>
+	 <load-on-startup>0</load-on-startup>
+</servlet>
+<servlet-mapping>
+	 <servlet-name>ReportServer</servlet-name>
+	 <url-pattern>/ReportServer</url-pattern>
+</servlet-mapping>
+
+
+<!--登录首页验证-->
+	<servlet>
+		<servlet-name>LoginServlet</servlet-name>
+		<servlet-class>com.strongit.iss.servlet.LoginServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LoginServlet</servlet-name>
+		<url-pattern>/LoginServlet</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>ShitServlet</servlet-name>
+		<servlet-class>com.strongit.iss.servlet.ShitServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ShitServlet</servlet-name>
+		<url-pattern>/ShitServlet</url-pattern>
+	</servlet-mapping>
+	<!--数据处理-->
+	<servlet>
+		<servlet-name>DealDataServlet</servlet-name>
+		<servlet-class>com.strongit.iss.servlet.DealDataServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>DealDataServlet</servlet-name>
+		<url-pattern>/DealDataServlet</url-pattern>
+	</servlet-mapping>
+<!-- 	 帆软BI    end-->
+	<!--&lt;!&ndash; 异常跳转页面 &ndash;&gt;-->
+	<!--<error-page>-->
+		<!--<error-code>401</error-code>-->
+		<!--<location>/common/error/401.jsp</location>-->
+	<!--</error-page>-->
+	<!--<error-page>-->
+		<!--<error-code>403</error-code>-->
+		<!--<location>/common/error/403.jsp</location>-->
+	<!--</error-page>-->
+	<!--<error-page>-->
+		<!--<error-code>500</error-code>-->
+		<!--<location>/common/error/500.jsp</location>-->
+	<!--</error-page>-->
+	<!--<error-page>-->
+		<!--<error-code>404</error-code>-->
+		<!--<location>/common/error/404.jsp</location>-->
+	<!--</error-page>-->
+	<!--<error-page>-->
+		<!--<error-code>405</error-code>-->
+		<!--<location>/common/error/405.jsp</location>-->
+	<!--</error-page>-->
+
+	<session-config>
+		<!-- session超时定义，单位：分钟 -->
+		<session-timeout>30</session-timeout>
+		<!-- cookie相关设置 -->
+		<cookie-config>
+			<name>JSESSIONID</name>
+			<!-- 指定cookie是否可通过客户端脚本访问 -->
+			<http-only>true</http-only>
+			<!-- 指定cookie是否只能通过https协议访问 -->
+			<secure>false</secure>
+		</cookie-config>
+	</session-config>
+</web-app>

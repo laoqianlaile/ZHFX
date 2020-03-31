@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>综合分析</title>
+    <link rel="stylesheet" type="text/css" href="/BI/themes/css/iframe.css">
+    <link rel="stylesheet" type="text/css" href="/BI/themes/css/layout.css">
+    <script type="text/javascript" src="/BI/js/jquery-1.11.3.min.js"></script>
+    <script src="/BI/js/base.js"></script>
+    <script src="/BI/js/echarts/echarts-all.js"></script>
+    <script type="text/javascript" src="/BI/common/extend.js"></script>
+     <script type="text/javascript" src="./jsondata.js"></script>
+</head>
+<body>
+	<div id="fhyhz" class="chartDiv divContent">
+        <span class="jbg topLeft"></span>
+        <span class="jbg topRight"></span>
+        <span class="jbg bottomLeft"></span>
+        <span class="jbg bottomRight"></span>
+        <!--  中间的内容区域 -->
+        <h6 class="chartDivTitle">
+	        <span class="r">
+		        <a href="javascript:void(0)" onclick="Tab(this,'.chartDivTitle a','click-on');showHide('#fhy-gs');switchTitleTxt('gs')" class="click-on">
+		       		 个数
+		        </a>
+		        <a href="javascript:void(0)" onclick="Tab(this,'.chartDivTitle a','click-on');showHide('#fhy-ztz');switchTitleTxt('tz')">
+		       		 总投资
+		        </a>
+	        </span>
+          <span id="titleTxt">审核备项目投资环比</span>
+        	<i title="设为主控"></i>
+<!--         	<a class="more" href="javaScript:void(0)">更多>></a> -->
+        </h6>
+        <div class="chartHeight" id="fhy-gs" style="visibility: hidden;">
+            <div class="chartCenter" id="myNumChart" _echarts_instance_="1503476555631" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0);"><div style="position: relative; overflow: hidden; width: 1364px; height: 610px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none;"></div><canvas width="1364" height="610" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1364" height="610" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1364" height="610" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas></div></div>
+        </div>
+        <div class="chartHeight" id="fhy-ztz">
+            <div class="chartCenter" id="myChart" _echarts_instance_="1503476555630" style="-webkit-tap-highlight-color: transparent; user-select: none; background-color: rgba(0, 0, 0, 0); cursor: default;"><div style="position: relative; overflow: hidden; width: 1364px; height: 610px;"><div data-zr-dom-id="bg" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none;"></div><canvas width="1364" height="610" data-zr-dom-id="0" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1364" height="610" data-zr-dom-id="1" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><canvas width="1364" height="610" data-zr-dom-id="_zrender_hover_" class="zr-element" style="position: absolute; left: 0px; top: 0px; width: 1364px; height: 610px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></canvas><div class="echarts-tooltip zr-element" style="position: absolute; display: none; border-style: solid; white-space: nowrap; transition: left 0.4s, top 0.4s; background-color: rgba(0, 0, 0, 0.7); border-width: 0px; border-color: rgb(51, 51, 51); border-radius: 4px; color: rgb(255, 255, 255); font-size: 20px; line-height: 30px; padding: 5px; left: 838px; top: 133px;">08月<br>2016年(柱)审核备项目总投资：1.38万亿元<br>2016年增速：-40.77%<br></div></div></div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /***
+         *  切换标题
+         * @orderBy
+         * @param
+         * @return
+         * @author tannc
+         * @Date 2016/11/5 13:36
+         **/
+        function  switchTitleTxt(name){
+            switch (name){
+                case "gs": $("#titleTxt").text("审核备项目个数环比"); break;
+                case "tz": $("#titleTxt").text("审核备项目投资环比");break;
+            }
+        }
+  		//定义父窗口
+    	var parentWin = parent;
+    	var orderby="orderbymon";
+  		//页面初始化加载
+    	window.onload = function(){
+        	for (var i=0;i<5;i++) {
+            	if (parentWin.win) {
+            		//将当前窗口定义到父级窗口
+                	parentWin.win["viewMonthTrends"] = window;
+            	}else{
+                	parentWin = parentWin.parent;
+            	}
+        	}
+     		// 装载数据 
+        	loadData();
+     		
+            //单击更多触发事件
+         	$('.chartDivTitle').find(".more").bind("click",function(){
+         		var url = "/BI/view/overView!getFivePlanInfoTrends?orderby="+orderby;
+         		var name=parentWin.filters["params.moduleName"];
+                 var params =parentWin.filters;
+         		loadMoreData(url,params);
+         	});
+            
+            //个数
+            $(".r a:eq(0)").bind("click",function(){
+            	Tab(this,'.chartDivTitle a','click-on');
+            	showHide('#fzf-gs');
+            	// 项目个数 
+            	orderby="orderbycnt";
+         		loadData();
+         	});
+            // 总投资
+            $(".r a:eq(1)").bind("click",function(){
+            	Tab(this,'.chartDivTitle a','click-on');
+            	 showHide('#fzf-ztz');
+            	// 总投资  
+             	orderby="orderbymon";
+          		loadData();
+         	});
+    	}
+    	
+  		var option = {
+  			    tooltip : {
+  			        trigger: 'axis',
+                    textStyle:ZHFX.tooltipTextStyle,
+  			      	formatter : function(params) {
+			        	var str = '';
+			        	if (null != params && params.length > 0) {
+			        		str += params[0].name + '</br>';
+			        		for (var i = 0; i < params.length; i++) {
+			        			if (params[i].seriesName.indexOf('柱') > -1) {
+				        			str += params[i].seriesName + '审核备项目总投资：' + formatAmount(params[i].value) + '</br>';
+			        			} else {
+			        				str += params[i].seriesName + '增速：' 
+			        					+ ('-' != params[i].value ? params[i].value + '%' : params[i].value) + '</br>';
+			        			}
+			        		}
+			        	}
+			        	return str;
+			        }
+  			    },
+  			    legend: {
+                    textStyle:ZHFX.legendTextStyle,
+                    selected: {
+                        '2014年(柱)' : false,
+                        '2015年(柱)' : false,
+                        '2014年' : false,
+                        '2015年' : false
+                    },
+  			        data:['2014年(柱)','2015年(柱)','2016年(柱)','2014年','2015年','2016年']
+  			    },
+                grid:{
+                    borderWidth:0,
+                    x: 100,
+                    x2:100,
+                    y: 60,
+                    y2:40
+                },
+  			    calculable : false,
+  			    xAxis : [
+                    {
+                        type: 'category',
+                        axisLine:ZHFX.axisLine,
+                        splitLine: {show:false},
+                        data: [],
+                        axisLabel: {
+                            rotate:'-20',
+                            textStyle: ZHFX.XTextStyle
+                        }
+                    }
+  			    ],
+  			    yAxis : [
+  			        {
+  			            type : 'value',
+  			            name : '总投资(柱)',
+  			          	'nameTextStyle' : {
+  							color : '#ff7f50'	
+  						},
+                        splitLine:{
+                            show:true,
+                            lineStyle: {
+                                color: '#333e50',
+                                type:'dashed'
+
+                            }
+                        },
+  			            axisLabel : {
+                            textStyle: ZHFX.YTextStyle,
+  			            	formatter : function(value) {
+		                    	if ((formatAmount(value)+'').indexOf('.00') > 0) {
+	                         		return (formatAmount(value)+'').replace('.00','');
+	                         	} else if ('0元' != formatAmount(value)) {
+	                          		return formatAmount(value);
+	                          	} else {
+	                         		return 0;
+	                         	}
+		                    }
+  			            }
+  			        },
+  			      	{
+    					'type':'value',
+    					'name':'增速（折线）',
+    					'nameTextStyle' : {
+    						color : '#87cefa'	
+    					},
+    					axisLabel: {
+                            textStyle: ZHFX.YTextStyle,
+                            formatter : function(value) {
+                                return value + '%';
+                            }
+                        },
+                        splitLine:{
+                            show:false,
+                            lineStyle: {
+                                color: '#333e50',
+                                type:'dashed'
+
+                            }
+                        }
+    				}
+  			    ],
+  			    series : [
+  			      	{
+  			            name:'2014年(柱)',
+  			            type:'bar',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2015年(柱)',
+  			            type:'bar',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2016年(柱)',
+  			            type:'bar',
+  			            data:[],
+  			          	itemStyle: {
+			            	normal: {
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				//return formatFund(params.value);
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        },
+  			        {
+  			            name:'2014年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[],
+  			          	itemStyle: {
+			            	normal: {
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				return params.value;
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        },
+  			      	{
+  			            name:'2015年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[],
+  			          	itemStyle: {
+			            	normal: {
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				return params.value;
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        },
+  			      	{
+  			            name:'2016年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[],
+  			          	itemStyle: {
+
+			            	normal: {
+                                color:'#FFD700',
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				return params.value;
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        }
+  			    ]
+  			};
+  		
+  		var optionNum = {
+  			    tooltip : {
+  			        trigger: 'axis',
+                    textStyle:ZHFX.tooltipTextStyle,
+  			      	formatter : function(params) {
+			        	var str = '';
+			        	if (null != params && params.length > 0) {
+			        		str += params[0].name + '</br>';
+			        		for (var i = 0; i < params.length; i++) {
+			        			if (params[i].seriesName.indexOf('柱') > -1) {
+				        			str += params[i].seriesName + '审核备项目个数：' + formatCount(params[i].value) + '</br>';
+			        			} else {
+			        				str += params[i].seriesName + '增速：' 
+			        					+ ('-' != params[i].value ? params[i].value + '%' : params[i].value) + '</br>';
+			        			}
+			        		}
+			        	}
+			        	return str;
+			        }
+  			    },
+  			    legend: {
+                    textStyle:ZHFX.legendTextStyle,
+                    selected: {
+                        '2014年(柱)' : false,
+                        '2015年(柱)' : false,
+                        '2014年' : false,
+                        '2015年' : false
+                    },
+  			        data:['2014年(柱)','2015年(柱)','2016年(柱)','2014年','2015年','2016年']
+  			    },
+                grid:{
+                    borderWidth:0,
+                    x: 100,
+                    x2:100,
+                    y: 60,
+                    y2:40
+                },
+  			    calculable : false,
+  			    xAxis : [
+                    {
+                        type: 'category',
+                        axisLine:ZHFX.axisLine,
+                        boundaryGap: false,
+                        splitLine: {show:false},
+                        data: [],
+                        axisLabel: {
+                            rotate:'-20',
+                            textStyle: ZHFX.XTextStyle
+                        }
+                    }
+  			    ],
+  			    yAxis : [
+  			        {
+  			            type : 'value',
+  			          	name : '个数(柱)',
+			          	'nameTextStyle' : {
+							color : '#ff7f50'	
+						},
+                        splitLine:{
+                            show:true,
+                            lineStyle: {
+                                color: '#333e50',
+                                type:'dashed'
+
+                            }
+                        },
+  			            axisLabel : {
+                            textStyle: ZHFX.YTextStyle,
+                            formatter : function(value) {
+		                    	if ('0个' != formatCount(value)) {
+	                          		return formatCount(value);
+	                          	} else {
+	                         		return 0;
+	                         	}
+		                    }
+  			            }
+  			        },
+  			      	{
+    					'type':'value',
+    					'name':'增速（折线）',
+    					'nameTextStyle' : {
+    						color : '#87cefa'	
+    					},
+    					axisLabel: {
+                            textStyle: ZHFX.YTextStyle,
+                            formatter : function(value) {
+                                return value + '%';
+                            }
+                        },
+                        splitLine:{
+                            show:false,
+                            lineStyle: {
+                                color: '#333e50',
+                                type:'dashed'
+
+                            }
+                        }
+    				}
+  			    ],
+  			    series : [
+  			        {
+  			            name:'2014年(柱)',
+  			            type:'bar',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2015年(柱)',
+  			            type:'bar',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2016年(柱)',
+  			            type:'bar',
+  			            data:[],
+  			          	itemStyle: {
+			            	normal: {
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				//return formatFund(params.value);
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        },
+  			        {
+  			            name:'2014年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2015年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[]
+  			        },
+  			      	{
+  			            name:'2016年',
+  			          	'yAxisIndex':1,
+  			            type:'line',
+  			            data:[],
+  			          	itemStyle: {
+			            	normal: {
+                                color:'#FFD700',
+			            		label : {
+			            			show : true,
+			            			position : 'top',
+			            			formatter: function (params) {
+			            				return params.value;
+			                        },
+			                        textStyle : ZHFX.topTextStyle
+			                    }
+			            	}
+			            }
+  			        }
+  			    ]
+  			};
+  		
+    	//初始化数据
+    	var myChart = echarts.init(document.getElementById('myChart'));
+    	var myNumChart = echarts.init(document.getElementById('myNumChart'));
+    	
+    	/**
+    	 * 加载数据
+    	 */
+    	function loadData() {
+    		myChart.showLoading({
+                text: '正在努力的加载数据中...'
+            });
+    		var params = parentWin.filters;
+    		// 异步加载 全国项目进展情况
+             var data=PREPARETION;
+                    // 清空数据
+                    option.xAxis[0].data = legendAxisData;
+                    //设置数据
+                    option.series[0].data = [];
+                    option.series[1].data = [];
+                    option.series[2].data = [];
+                    option.series[3].data = [];
+                    option.series[4].data = [];
+                    option.series[5].data = [];
+                    //总投资
+                    optionNum.xAxis[0].data = [];
+                    //设置数据
+                    optionNum.series[0].data = [];
+                    optionNum.series[1].data = [];
+                    optionNum.series[2].data = [];
+                    optionNum.series[3].data = [];
+                    optionNum.series[4].data = [];
+                    optionNum.series[5].data = [];
+
+                	var legendAxisData = [];
+                    var investMon = [];
+                    var cnt = [];
+                    var investMon1 = [];
+                    var cnt1 = [];
+                    var investMon2 = [];
+                    var cnt2 = [];
+                    var names = [];
+                    var invTrend = [];
+                    var cntTrend = [];
+                    var invTrend1 = [];
+                    var cntTrend1 = [];
+                    var invTrend2 = [];
+                    var cntTrend2 = [];
+                	if (data) {
+                	    var  totalMon = 0;
+                	    var  totalCnt = 0;
+                	    var  totalMon1 = 0;
+                	    var  totalCnt1 = 0;
+                	    var  totalMon2 = 0;
+                	    var  totalCnt2 = 0;
+                		// 遍历对象
+                        for (var i=0,len=data.length; i<len; i++) {
+                        	var date = data[i]["itemName"];
+                        	if (date.indexOf('2014') > -1) {
+                        		if (i == 0) {
+                        			invTrend.push(0);
+                        			cntTrend.push(0);
+                        		} else {
+                        			var trend = Number((Number(data[i]["investMon"]||0) - Number(data[i-1]["investMon"]||0)) * 100/Number(data[i-1]["investMon"]||1)).toFixed(2);
+                        			var trendCnt = Number((Number(data[i]["cnt"]||0) - Number(data[i-1]["cnt"]||0)) * 100/Number(data[i-1]["cnt"]||1)).toFixed(2);
+                        			invTrend.push(trend);
+                        			cntTrend.push(trendCnt);
+                        		}
+                        		totalMon = parseInt(data[i]["investMon"]||0);
+                   				totalCnt = parseInt(data[i]["cnt"]||0);
+                   				investMon.push(totalMon);
+                       			cnt.push(totalCnt);
+                   				legendAxisData.push(date.substring(4,6) + '月');
+                        	}
+                        	if (date.indexOf('2015') > -1) {
+                        		if (i == 12) {
+                        			invTrend1.push(0);
+                        			cntTrend1.push(0);
+                        		} else {
+                        		    var trend1 = 0;
+                                    var trendCnt1=0;
+                        		    if( i>=1){
+                                        trend1= Number((Number(data[i]["investMon"]||0) - Number(data[i-1]["investMon"]||0)) * 100/Number(data[i-1]["investMon"]||1)).toFixed(2);
+                                        trendCnt1= Number((Number(data[i]["cnt"]||0) - Number(data[i-1]["cnt"]||0)) * 100/Number(data[i-1]["cnt"]||1)).toFixed(2);
+                                    }
+                        			invTrend1.push(trend1);
+                        			cntTrend1.push(trendCnt1);
+                        		}
+                        		totalMon1 = parseInt(data[i]["investMon"]||0);
+                   				totalCnt1 = parseInt(data[i]["cnt"]||0);
+                   				investMon1.push(totalMon1);
+                       			cnt1.push(totalCnt1); 
+                        	}
+                        	if (date.indexOf('2016') > -1) {
+                        		if (i == 24) {
+                        			invTrend2.push(0);
+                        			cntTrend2.push(0);
+                        		} else {
+                        			var trend2 = Number((Number(data[i]["investMon"]||0) - Number(data[i-1]["investMon"]||0)) * 100/Number(data[i-1]["investMon"]||1)).toFixed(2);
+                        			var trendCnt3 = Number((Number(data[i]["cnt"]||0) - Number(data[i-1]["cnt"]||0)) * 100/Number(data[i-1]["cnt"]||1)).toFixed(2);
+                        			invTrend2.push(trend2);
+                        			cntTrend2.push(trendCnt3);
+                        		}
+                        		totalMon2 = parseInt(data[i]["investMon"]||0);
+                   				totalCnt2 = parseInt(data[i]["cnt"]||0);
+                   				investMon2.push(totalMon2);
+                       			cnt2.push(totalCnt2); 
+                        	}
+                        }
+                    }
+                	option.xAxis[0].data = legendAxisData;
+                	//设置数据
+                    option.series[0].data = investMon;
+                    option.series[1].data = investMon1;
+                    option.series[2].data = investMon2;
+                    option.series[3].data = invTrend;
+                    option.series[4].data = invTrend1;
+                    option.series[5].data = invTrend2;
+                    //总投资
+                    optionNum.xAxis[0].data = legendAxisData;
+                	//设置数据
+                    optionNum.series[0].data = cnt;
+                    optionNum.series[1].data = cnt1;
+                    optionNum.series[2].data = cnt2;
+                    optionNum.series[3].data = cntTrend;
+                    optionNum.series[4].data = cntTrend1;
+                    optionNum.series[5].data = cntTrend2;
+                    //加载隐藏
+                    myChart.hideLoading();
+                    //渲染对象
+                    myChart.setOption(option,true);
+                    myNumChart.setOption(optionNum,true);
+
+    	}
+    	
+    	//刷新
+        function refreshWin() {
+            // 联动设置
+            loadData();
+        }
+    </script>
+
+</body>
+</html>

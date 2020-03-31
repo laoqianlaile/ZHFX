@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>综合分析</title>
+    <link rel="stylesheet" type="text/css" href="/BI/themes/css/global.css">
+    <link rel="stylesheet" type="text/css" href="/BI/themes/css/layout.css">
+    <script type="text/javascript" src="/BI/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/BI/js/prefixfree.min.js"></script>
+    <script type="text/javascript" src="/BI/js/jquery.transit.min.js"></script>
+    <script type="text/javascript" src="/BI/common/extend.js"></script>
+</head>
+
+<body>
+
+<table width="100%" height="800px">
+    <tbody><tr>
+        <td colspan="2" style="width:100%;height: 400px">
+            <iframe allowtransparency="true" frameborder="0" width="100%" scrolling="no" height="100%" src="/BI/approvalRecord/showApprovalRecordYearTrend.html"></iframe>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="width:100%;height: 400px">
+            <iframe allowtransparency="true" frameborder="0" width="100%" scrolling="no" height="100%" src="/BI/approvalRecord/showApprovalRecordMonthTrend.html"></iframe>
+        </td>
+    </tr>
+    <tr>
+        <td style="width:60%;height: 600px;padding-right:10px;">
+            <iframe allowtransparency="true" frameborder="0" width="100%" scrolling="no" height="100%" src="/BI/approvalRecord/showApprovalRecordMap.html"></iframe>
+        </td>
+        <td style="width:40%;height: 600px">
+            <iframe allowtransparency="true" frameborder="0" width="100%" scrolling="no" height="100%" src="/BI/approvalRecord/showApprovalRecordIndustry.html"></iframe>
+        </td>
+    </tr>
+    </tbody></table>
+<script type="text/javascript">
+    // 初始化主窗口是地图  fiters 过滤参数
+    var mainWin='',win=[],filters={};
+    //刷新
+    function refreshWin(code) {
+        for(var key in win){
+            // 主的不刷新
+            if(key!=mainWin){
+                // 传参数
+                win[key].refreshWin(code);
+            }
+        }
+    }
+</script>
+
+</body>
+</html>

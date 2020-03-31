@@ -1,0 +1,172 @@
+@charset "utf-8";
+/* CSS Document by_hanwy-2017.03.23*/
+#home_menu_wrap{
+	text-align:center;
+}
+.home_menu_content{
+	display:inline-block;
+	width:1090px;
+	height:490px;
+	margin-top:10%;
+}
+.home_menu_left,
+.home_menu_right{
+	float:left;
+	width:455px;
+	height:455px;
+	margin:0 45px;
+	position:relative;
+}
+.home_menu_left{
+	background:url(index/home_menu_1bg.png);
+}
+.home_menu_right{
+	background:url(index/home_menu_2bg.png);
+}
+.home_menu_content a.home_link{
+	display:block;
+	position:absolute;
+	background-repeat:no-repeat;
+}
+a.inactive,a:link.inactive,a:visited.inactive,a:hover.inactive{
+	cursor:default;
+}
+a.link_l1{
+	width:166px;
+	height:58px;
+	top:200px;
+	left:145px;
+	background-image:url(index/home_menu_1_1.png);
+}
+a.link_l1:hover{background-image:url(index/home_menu_1_1_on.png)}
+a.link_l1.inactive,a:hover.link_l1.inactive
+{background-image:url(index/home_menu_1_1_off.png)}
+a.link_l2{
+	width:105px;
+	height:65px;
+	top:75px;
+	left:400px;
+	background-image:url(index/home_menu_1_2.png);
+}
+a.link_l2:hover{background-image:url(index/home_menu_1_2_on.png)}
+a.link_l2.inactive,a:hover.link_l2.inactive
+{background-image:url(index/home_menu_1_2_off.png)}
+a.link_l3{
+	width:110px;
+	height:66px;
+	top:430px;
+	left:170px;
+	background-image:url(index/home_menu_1_3.png);
+}
+a.link_l3:hover{background-image:url(index/home_menu_1_3_on.png)}
+a.link_l3.inactive,a:hover.link_l3.inactive
+{background-image:url(index/home_menu_1_3_off.png)}
+a.link_l4{
+	width:105px;
+	height:65px;
+	top:80px;
+	left:-50px;
+	background-image:url(index/home_menu_1_4.png);
+}
+a.link_l4:hover{background-image:url(index/home_menu_1_4_on.png)}
+a.link_l4.inactive,a:hover.link_l4.inactive
+{background-image:url(index/home_menu_1_4_off.png)}
+a.link_r1{
+	width:166px;
+	height:58px;
+	top:200px;
+	left:145px;
+	background-image:url(index/home_menu_2_1.png);
+}
+a.link_r1:hover{background-image:url(index/home_menu_2_1_on.png)}
+a.link_r1.inactive,a:hover.link_r1.inactive
+{background-image:url(index/home_menu_2_1_off.png)}
+a.link_r2{
+	width:100px;
+	height:64px;
+	top:10px;
+	left:340px;
+	background-image:url(index/home_menu_2_2.png);
+}
+a.link_r2:hover{background-image:url(index/home_menu_2_2_on.png)}
+a.link_r2.inactive,a:hover.link_r2.inactive
+{background-image:url(index/home_menu_2_2_off.png)}
+a.link_r3{
+	width:105px;
+	height:65px;
+	top:235px;
+	left:415px;
+	background-image:url(index/home_menu_2_3.png);
+}
+a.link_r3:hover{background-image:url(index/home_menu_2_3_on.png)}
+a.link_r3.inactive,a:hover.link_r3.inactive
+{background-image:url(index/home_menu_2_3_off.png)}
+a.link_r4{
+	width:105px;
+	height:65px;
+	top:430px;
+	left:170px;
+	background-image:url(index/home_menu_2_4.png);
+}
+a.link_r4:hover{background-image:url(index/home_menu_2_4_on.png)}
+a.link_r4.inactive,a:hover.link_r4.inactive
+{background-image:url(index/home_menu_2_4_off.png)}
+a.link_r5{
+	width:134px;
+	height:65px;
+	top:290px;
+	left:-90px;
+	background-image:url(index/home_menu_2_5.png);
+}
+a.link_r5:hover{background-image:url(index/home_menu_2_5_on.png)}
+a.link_r5.inactive,a:hover.link_r5.inactive
+{background-image:url(index/home_menu_2_5_off.png)}
+a.link_r6{
+	width:105px;
+	height:65px;
+	top:15px;
+	left:5px;
+	background-image:url(index/home_menu_2_6.png);
+}
+a.link_r6:hover{background-image:url(index/home_menu_2_6_on.png)}
+a.link_r6.inactive,a:hover.link_r6.inactive
+{background-image:url(index/home_menu_2_6_off.png)}
+
+/*重点业务菜单*/
+#zd-menuDiv{
+	width:100%;
+	height:100%;
+}
+#zd-menuDiv .btn-Sort{
+	width:200px;
+	height:171px;
+	background-image:url(index/zdMenu_bg.png);
+	background-repeat:no-repeat;
+}
+#zd-menuDiv .btn-Sort:hover{
+	background-image:url(index/zdMenu-on_bg.png);
+}
+#zd-menuDiv .btn-Sort.inactive,
+#zd-menuDiv .btn-Sort.inactive:hover{
+	background-image:url(index/zdMenu-off_bg.png);
+	cursor:default;
+}
+#zd-menuDiv .btn-Sort:before,
+#zd-menuDiv .btn-Sort:after{
+	display:none;
+}
+.zdbtn-1{
+	background-position:0 0;
+}
+.zdbtn-2{
+	background-position:-200px 0;
+}
+.zdbtn-3{
+	background-position:-400px 0;
+}
+.zdbtn-4{
+	background-position:-597px 0;
+}
+.zdbtn-5{
+	background-position:-797px 0;
+}

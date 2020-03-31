@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <title>rainbow galaxy</title>
+    <link rel="stylesheet" type="text/css" href="themes/css/global.css"/>
+    <link rel="stylesheet" type="text/css" href="themes/css/home.css"/>
+</head>
+<body>
+<div id="header"></div>
+<div id="container">
+    <div class="ui_base u_p3d">
+        <div class="ball_c ball_c_1">
+            <img src="themes/images/img_1.png">
+            <span>政府投资管理</span>
+        </div>
+        <div class="ball_c ball_c_2">
+            <img src="themes/images/img_2.png">
+            <span>企业投资项目<br>管理</span>
+        </div>
+        <div class="base u_p3d base_1">
+            <div class="pan pan_1"></div>
+            <div class="ball_base u_p3d ball_1">
+                <div class="ball">
+                    <img src="themes/images/img_3.png">
+                    <span>预测预警<br>分析</span>
+                </div>
+            </div>
+        </div>
+       <div class="base u_p3d base_2">
+           <div class="pan pan_2"></div>
+           <div class="ball_base u_p3d ball_2">
+               <div class="ball">
+                   <img src="themes/images/img_4.png">
+                   <span>项目监测</span>
+               </div>
+           </div>
+       </div>
+       <div class="base u_p3d base_3">
+           <div class="pan pan_3"></div>
+           <div class="ball_base u_p3d ball_3">
+               <div class="ball">
+                   <img src="themes/images/img_5.png">
+                   <span>平台服务<br>情况</span>
+               </div>
+           </div>
+       </div>
+
+    </div>
+</div>
+
+<canvas id="c"></canvas>
+
+<script src='js/jquery-1.11.3.min.js'></script>
+<script src='js/dat.gui.min.js'></script>
+<script src="js/index.js"></script>
+    <script>
+        $(function(){
+            $('.ball').hover(function(){
+                $('.base').addClass('animation_paused');
+            },function(){
+                $('.base').removeClass('animation_paused');
+            });
+            $('.ball').click(function(){
+                $('.base').toggleClass('animation_paused');
+            });
+        });
+    </script>
+
+</body>
+</html>

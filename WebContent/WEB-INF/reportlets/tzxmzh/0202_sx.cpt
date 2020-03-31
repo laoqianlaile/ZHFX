@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WorkBook xmlVersion="20131111" releaseVersion="7.0.5">
+<TableDataMap>
+<TableData name="ds1" class="com.fr.data.impl.DBTableData">
+<Parameters>
+<Parameter>
+<Attributes name="blzt_0202"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="spcj_0202"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+<Parameter>
+<Attributes name="division_0202"/>
+<O>
+<![CDATA[]]></O>
+</Parameter>
+</Parameters>
+<Attributes maxMemRowCount="-1"/>
+<Connection class="com.fr.data.impl.NameDatabaseConnection">
+<DatabaseName>
+<![CDATA[GBase]]></DatabaseName>
+</Connection>
+<Query>
+<![CDATA[SELECT
+        BB.STANDARD_SORT_NAME AS CODE_NAME,
+        AA.SUM_NUM                        ,
+        AA.QDW_NUM                        ,
+        AA.QDN_NUM                        ,
+        AA.ZB_NUM                         ,
+        AA.BJ_NUM                         ,
+        AA.CQ_NUM                         ,
+        AA.AQ_NUM
+FROM
+        (
+                SELECT
+                        CENTRAL_APPROVAL_ITEMID AS CODE_VALUE,
+                        SUM(NUM)                                                                                                                 AS SUM_NUM   ,
+                        SUM(CASE ISGJSXQD WHEN '国家事项清单外'               THEN 1 ELSE 0 END)                                                                      AS QDW_NUM   ,
+                        SUM(CASE ISGJSXQD WHEN '国家事项清单内'               THEN 1 ELSE 0 END)                                                                      AS QDN_NUM   ,
+                        SUM(CASE          WHEN IS_DEAL_COMPLETED = '0' THEN 1 ELSE 0 END)                                                                      AS ZB_NUM    ,
+                        SUM(IS_DEAL_COMPLETED)                                                                                                                 AS BJ_NUM    ,
+                        SUM(OUTOFDATENUM)                                                                                                                      AS CQ_NUM    ,
+                        SUM(NORMALNUM)                                                                                                                         AS AQ_NUM
+                FROM
+                    FA_SXSL A,
+				DIM_DIVISION B,
+				DIM_ZYBM C,
+                    DIM_ITEMSORT D,
+                    DIM_SPCJ E,
+                    ENMU_ZBBJ F
+                WHERE
+                        A.ITEM_SPQH=B.CODE
+                        AND A.DEPT_CENTER_MAP=C.CODE_VALUE
+                        AND A.CENTRAL_APPROVAL_ITEMID=D.STANDARD_SORT_CODE
+                        AND A.ITEM_SPCJ=E.CODE_VALUE
+                        AND A.IS_DEAL_COMPLETED=F.CODE_VALUE
+${if(len(division_0202)==0,""," and B.S_NAME1='" + division_0202 + "'")}
+${if(len(spcj_0202)==0,""," and E.CODE_NAME='" + spcj_0202 + "'")}
+${if(len(blzt_0202)==0,""," and F.CODE_NAME='" + blzt_0202 + "'")}
+                GROUP BY
+                        CENTRAL_APPROVAL_ITEMID
+        )
+        AA
+LEFT JOIN DIM_ITEMSORT BB
+ON
+        AA.CODE_VALUE=BB.STANDARD_SORT_CODE
+ORDER BY
+        AA.SUM_NUM DESC]]></Query>
+</TableData>
+</TableDataMap>
+<Report class="com.fr.report.worksheet.WorkSheet" name="sheet1">
+<ReportPageAttr>
+<HR/>
+<FR/>
+<HC/>
+<FC/>
+</ReportPageAttr>
+<RowHeight defaultValue="723900">
+<![CDATA[723900,723900,723900,723900,723900,723900,723900,723900,723900,723900,723900]]></RowHeight>
+<ColumnWidth defaultValue="2743200">
+<![CDATA[2743200,4114800,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200,2743200]]></ColumnWidth>
+<CellElementList>
+<C c="0" r="0" rs="2" s="0">
+<O>
+<![CDATA[序号]]></O>
+<Expand/>
+</C>
+<C c="1" r="0" rs="2" s="0">
+<O>
+<![CDATA[事项]]></O>
+<Expand/>
+</C>
+<C c="2" r="0" rs="2" s="0">
+<O>
+<![CDATA[事项数]]></O>
+<Expand/>
+</C>
+<C c="3" r="0" cs="2" s="0">
+<O>
+<![CDATA[在办]]></O>
+<Expand/>
+</C>
+<C c="5" r="0" cs="2" s="0">
+<O>
+<![CDATA[办结]]></O>
+<Expand/>
+</C>
+<C c="3" r="1" s="0">
+<O>
+<![CDATA[数量]]></O>
+<Expand/>
+</C>
+<C c="4" r="1" s="0">
+<O>
+<![CDATA[占比]]></O>
+<Expand/>
+</C>
+<C c="5" r="1" s="0">
+<O>
+<![CDATA[数量]]></O>
+<Expand/>
+</C>
+<C c="6" r="1" s="0">
+<O>
+<![CDATA[占比]]></O>
+<Expand/>
+</C>
+<C c="0" r="2" s="1">
+<Expand/>
+</C>
+<C c="1" r="2" s="2">
+<O>
+<![CDATA[合计]]></O>
+<Expand/>
+</C>
+<C c="2" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(C4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="3" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(D4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="4" r="2" s="2">
+<O>
+<![CDATA[-]]></O>
+<Expand/>
+</C>
+<C c="5" r="2" s="1">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=SUM(F4)]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="6" r="2" s="2">
+<O>
+<![CDATA[-]]></O>
+<Expand/>
+</C>
+<C c="0" r="3" s="3">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=seq()]]></Attributes>
+</O>
+<Expand leftParentDefault="false" left="B4"/>
+</C>
+<C c="1" r="3" s="3">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="CODE_NAME"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="2" r="3" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="SUM_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="3" r="3" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="ZB_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="4" r="3" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=D4 / C4]]></Attributes>
+</O>
+<Expand/>
+</C>
+<C c="5" r="3" s="4">
+<O t="DSColumn">
+<Attributes dsName="ds1" columnName="BJ_NUM"/>
+<Complex/>
+<RG class="com.fr.report.cell.cellattr.core.group.FunctionGrouper"/>
+<Parameters/>
+</O>
+<Expand dir="0"/>
+</C>
+<C c="6" r="3" s="5">
+<O t="Formula" class="Formula">
+<Attributes>
+<![CDATA[=F4 / C4]]></Attributes>
+</O>
+<Expand/>
+</C>
+</CellElementList>
+<ReportAttrSet>
+<ReportSettings headerHeight="0" footerHeight="0">
+<PaperSetting>
+<PaperSize width="31680000" height="43200000"/>
+<Margin top="986400" left="2743200" bottom="986400" right="2743200"/>
+</PaperSetting>
+</ReportSettings>
+<Header reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Header>
+<Footer reportPageType="0">
+<Background name="NullBackground"/>
+<LeftList/>
+<CenterList/>
+<RightList/>
+</Footer>
+</ReportAttrSet>
+</Report>
+<ReportParameterAttr>
+<Attributes showWindow="true" delayPlaying="true" windowPosition="1" align="0"/>
+<PWTitle>
+<![CDATA[参数]]></PWTitle>
+</ReportParameterAttr>
+<StyleList>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="80"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="1" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style horizontal_alignment="0" imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+<Style imageLayout="1">
+<Format class="com.fr.base.CoreDecimalFormat">
+<![CDATA[#0.00%]]></Format>
+<FRFont name="SimSun" style="0" size="72"/>
+<Background name="NullBackground"/>
+<Border>
+<Top style="1"/>
+<Bottom style="1"/>
+<Left style="1"/>
+<Right style="1"/>
+</Border>
+</Style>
+</StyleList>
+<DesignerVersion DesignerVersion="HAF"/>
+<PreviewType PreviewType="0"/>
+</WorkBook>
